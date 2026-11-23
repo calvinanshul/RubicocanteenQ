@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { seedProductionFromEnv } from './seedAdmin';
 
 /**
- * Production bootstrap (`npm run db:seed:prod`), run by the Render start command after `prisma migrate deploy`.
+ * Production bootstrap (`npm run db:seed:prod`), run after `prisma migrate deploy` (`npm run db:deploy`) against the production database.
  * Reads ADMIN_EMAIL / ADMIN_PASSWORD / ADMIN_NAME / ALLOWED_EMAIL_DOMAINS from the service environment.
  * No demo data. See seedProductionFromEnv for what it does on first and later starts.
  */

@@ -90,7 +90,7 @@ export interface ProductionSeedResult {
 }
 
 /**
- * Production bootstrap, run on every start of the Render service (the free plan has no shell or pre-deploy step).
+ * Production bootstrap, run after each production migration.
  * Safe to repeat:
  * - Settings: created once with the defaults, plus ALLOWED_EMAIL_DOMAINS if given. Later starts never touch
  *   them, so changes made by an admin in Settings survive restarts.

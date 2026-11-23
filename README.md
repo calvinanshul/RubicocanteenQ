@@ -56,9 +56,10 @@ Demo accounts (seed data, demo only): `admin@rubicotech.com` / `Admin@2026`, `ma
 Create the test databases once: `createdb canteenq_test && createdb canteenq_e2e`. First E2E run: `npx playwright install chromium`.
 
 ## Deploy
-One Node web service: `npm ci --include=dev && npm run build`, then
-`npm run db:deploy && npm run db:seed:prod && npm start` (see [render.yaml](render.yaml)). Never set
-`ENABLE_TEST_CLOCK=true` in production: the server refuses the configuration.
+Hosted on Vercel (build command `npm run build`). Set `WEB_ORIGIN` to the site's public URL. Apply
+migrations and the production seed against the production database with
+`npm run db:deploy && npm run db:seed:prod`. Never set `ENABLE_TEST_CLOCK=true` in production: the server
+refuses the configuration.
 
-Rate limits are kept in memory per server instance, which suits this single-instance deploy. A serverless or
-multi-instance deploy (e.g. Vercel) needs a shared store for them.
+Rate limits are kept in memory per serverless instance, so on Vercel they are per instance, not global;
+a shared store (e.g. Redis) would make them exact.

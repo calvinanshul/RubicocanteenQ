@@ -1,13 +1,13 @@
 // TC-NFR-01 / TC-NFR-02: pre-cut-off ordering rush (Sprint 04, H5). Source: docs/07-non-functional-test.md §4.
 // Run against STAGING only (ENABLE_TEST_CLOCK=true there, never production):
-//   k6 run -e BASE_URL=https://<preview>.netlify.app -e TEST_DATE=YYYY-MM-DD -e LOADTEST_PASSWORD=*** \
+//   k6 run -e BASE_URL=https://<preview>.vercel.app -e TEST_DATE=YYYY-MM-DD -e LOADTEST_PASSWORD=*** \
 //          --summary-export=docs/perf/summary.json backend/tests/perf/order-rush.js
 // Then run backend/tests/perf/oversell-checks.sql against the staging DB; every query must return 0 rows.
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 
-const BASE = __ENV.BASE_URL;                       // e.g. https://deploy-preview-12--canteenq.netlify.app (requests go through the /api proxy, as real users' do)
+const BASE = __ENV.BASE_URL;                       // e.g. https://canteenq-git-branch.vercel.app (requests go through the /api proxy, as real users' do)
 const DATE = __ENV.TEST_DATE;                      // e.g. 2026-11-17
 const NOW  = `${DATE}T10:50:00+05:30`;
 const H    = { 'Content-Type': 'application/json', 'x-test-now': NOW };

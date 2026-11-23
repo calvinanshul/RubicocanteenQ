@@ -53,7 +53,7 @@ export function hit(rule: RateLimit, key: string, nowMs: number = Date.now()): R
 }
 
 /**
- * Client IP. Behind one proxy hop (Render / a CDN), the right-most X-Forwarded-For entry is the address the
+ * Client IP. Behind one proxy hop (Vercel / a CDN), the right-most X-Forwarded-For entry is the address the
  * proxy saw — the same choice as Express's `trust proxy = 1`.
  */
 export function clientIp(req: Request): string {

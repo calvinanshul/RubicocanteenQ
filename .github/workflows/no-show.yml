@@ -1,6 +1,6 @@
 # ST-17 / US-20: mark overdue orders NO_SHOW (X2). Runs every 15 minutes across the pickup
 # window and the no-show grace period: 12:30–16:15 IST = 07:00–10:45 UTC, Monday to Friday.
-# Repository secrets: API_URL (e.g. https://rubicocanteenq.onrender.com, the Render web service) and CRON_SECRET (same value as the API's).
+# Repository secrets: API_URL (e.g. https://<project>.vercel.app, the Vercel deployment) and CRON_SECRET (same value as the API's).
 name: no-show
 on:
   schedule:

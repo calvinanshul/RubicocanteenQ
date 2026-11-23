@@ -54,9 +54,7 @@ export type Env = z.infer<typeof envSchema>;
 
 /** Parse and validate environment variables. Throws with a readable message on failure. */
 export function parseEnv(source: Record<string, string | undefined>): Env {
-  // On Render the public URL is provided as RENDER_EXTERNAL_URL; use it as the web origin unless set explicitly.
-  const withDefaults = { ...source, WEB_ORIGIN: source.WEB_ORIGIN || source.RENDER_EXTERNAL_URL || undefined };
-  const result = envSchema.safeParse(withDefaults);
+  const result = envSchema.safeParse({ ...source, WEB_ORIGIN: source.WEB_ORIGIN || undefined });
   if (!result.success) {
     const lines = result.error.issues.map((i) => `  ${i.path.join('.')}: ${i.message}`);
     throw new Error(`Invalid environment configuration:\n${lines.join('\n')}`);

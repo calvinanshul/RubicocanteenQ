@@ -16,10 +16,10 @@ describe('API routing on Next.js', () => {
     expect(root.headers['content-type']).toMatch(/json/);
   });
 
-  it('uses RENDER_EXTERNAL_URL as the web origin unless WEB_ORIGIN is set', () => {
+  it('uses WEB_ORIGIN when set, localhost otherwise', () => {
     const base = { DATABASE_URL: 'postgresql://x', SESSION_SECRET: 's'.repeat(32) };
-    expect(parseEnv({ ...base, RENDER_EXTERNAL_URL: 'https://canteenq.onrender.com' }).WEB_ORIGIN).toBe('https://canteenq.onrender.com');
-    expect(parseEnv({ ...base, RENDER_EXTERNAL_URL: 'https://a.onrender.com', WEB_ORIGIN: 'https://lunch.example.com' }).WEB_ORIGIN).toBe('https://lunch.example.com');
+    expect(parseEnv({ ...base, WEB_ORIGIN: 'https://lunch.example.com' }).WEB_ORIGIN).toBe('https://lunch.example.com');
+    expect(parseEnv({ ...base, WEB_ORIGIN: '' }).WEB_ORIGIN).toBe('http://localhost:3000');
     expect(parseEnv(base).WEB_ORIGIN).toBe('http://localhost:3000');
   });
 });

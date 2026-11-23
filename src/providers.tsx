@@ -6,7 +6,7 @@ import { Suspense, useEffect, useState, type ReactNode } from 'react';
 import { ApiError, setUnauthorizedHandler } from './api/client';
 import { ToastProvider } from './components/ui';
 import { FullPageLoader } from './layouts/FullPageLoader';
-import { SlowBanner } from './layouts/SlowBanner';
+import { SlowLoader } from './layouts/SlowLoader';
 
 export function createQueryClient(): QueryClient {
   return new QueryClient({
@@ -21,12 +21,12 @@ export function createQueryClient(): QueryClient {
   });
 }
 
-/** Data, toasts and the "waking up the server" banner. */
+/** Data, toasts and the slow-request loader. */
 export function AppProviders({ client, children }: { client: QueryClient; children: ReactNode }) {
   return (
     <QueryClientProvider client={client}>
       <ToastProvider>
-        <SlowBanner />
+        <SlowLoader />
         {children}
       </ToastProvider>
     </QueryClientProvider>

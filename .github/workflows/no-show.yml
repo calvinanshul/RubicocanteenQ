@@ -20,6 +20,6 @@ jobs:
             echo "API_URL or CRON_SECRET is not set; skipping."
             exit 0
           fi
-          # The free API host may be asleep: allow time to wake up, retry once
+          # Allow time for a cold start, retry once
           curl --fail-with-body --silent --show-error --max-time 90 --retry 1 --retry-delay 20 \
             -X POST -H "Authorization: Bearer $CRON_SECRET" "$API_URL/api/cron/no-show"

@@ -1,7 +1,7 @@
 import type { ApiErrorBody, ErrorCode } from '@/shared';
 
 const BASE = process.env.NEXT_PUBLIC_API_BASE || '/api';
-const SLOW_MS = 3000;
+const SLOW_MS = 1000;
 
 export class ApiError extends Error {
   constructor(
@@ -15,7 +15,7 @@ export class ApiError extends Error {
   }
 }
 
-/* ---- "Waking up the server…" tracking (free API host sleeps when idle, NFR7) ---- */
+/* ---- Slow-request tracking: drives the global loader (NFR7) ---- */
 type Listener = () => void;
 let slowCount = 0;
 const listeners = new Set<Listener>();

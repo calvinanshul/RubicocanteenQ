@@ -3,6 +3,20 @@
 Office canteen pre-order: employees order lunch before the cut-off, pick a pickup slot and collect with a QR code.
 Project documentation lives in [`docs/`](docs/README.md); sprint plans and status in [`docs/sprints/`](docs/sprints/STATUS.md).
 
+## Live site
+**https://rubicocanteen-q.vercel.app/** (hosted on Vercel)
+
+Demo accounts (work on the live site and on a local `npm run db:seed` database):
+
+| Role | Email | Password | Lands on |
+|---|---|---|---|
+| Employee | `priya@rubicotech.com` | `Employee@2026` | `/menu` |
+| Counter staff | `staff@rubicotech.com` | `Staff@2026` | `/staff/queue` |
+| Manager | `manager@rubicotech.com` | `Manager@2026` | `/manager/dashboard` |
+| Admin | `admin@rubicotech.com` | `Admin@2026` | `/admin/users` |
+
+New employees can also sign up with an `@rubicotech.com` or `@rubicotech.in` email.
+
 > Migrated from the npm-workspaces monorepo (`frontend` React + Vite, `backend` Express, `shared`) to a single
 > Next.js app. The REST API contract (`/api/...` paths, request/response shapes, error codes, cookies) is
 > unchanged. See [docs/09-adr-002-nextjs-migration.md](docs/09-adr-002-nextjs-migration.md).
@@ -41,8 +55,7 @@ npm run db:seed:demo              # optional: today's orders as in the mockups (
 npm run dev                       # http://localhost:3000 (pages and /api on the same origin)
 ```
 
-Demo accounts (seed data, demo only): `admin@rubicotech.com` / `Admin@2026`, `manager@rubicotech.com` / `Manager@2026`,
-`staff@rubicotech.com` / `Staff@2026`, `priya@rubicotech.com` / `Employee@2026`.
+Log in with the demo accounts listed under [Live site](#live-site).
 
 ## Tests
 | Command | What | Database |

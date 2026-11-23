@@ -17,7 +17,7 @@
 | 06-2 | Server-side role gating: role group `layout.tsx` files (`(employee)`, `(staff)`, `(manager)`, `(admin)`) load the user from the DB and `redirect('/403')` for the wrong role. Disabled users are logged out. `RequireRole` client gate removed. | roles.spec, RBAC matrix |
 | 06-3 | Read pages are Server Components fetching via services: menu, checkout, my orders, order pass, profile, staff queue/prep, dashboard, exports, daily-menu editor, catalogue, users, settings. | E2E per page |
 | 06-4 | All mutations are Server Actions: login, signup, logout, place/cancel order, collect/no-show/status changes, scan redeem, menu item CRUD, daily-menu publish, user role/disable/edit, settings, closed dates. Same validation messages and field errors as today. | E2E + new action unit tests |
-| 06-5 | Live screens auto-refresh at the old intervals via `router.refresh()` and keep the "slow connection" banner. | counter.spec, golden.mobile |
+| 06-5 | Live screens auto-refresh at the old intervals via `router.refresh()` and keep the slow-request loader. | counter.spec, golden.mobile |
 | 06-6 | Cart and QR scanner stay client components. The scan page's camera cleanup (BUG-03-003) still holds. | counter.spec |
 | 06-7 | `loading.tsx`, `error.tsx`, `not-found.tsx`, `/403` replace `ErrorPages.tsx`/`FullPageLoader`, with the same copy and a11y. | TC-UI-03 |
 | 06-8 | React Query removed, or kept only where a client cache is still needed (document why). `frontend/src/api/hooks.ts` gone. | build |

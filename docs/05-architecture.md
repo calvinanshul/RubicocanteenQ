@@ -194,7 +194,7 @@ flowchart LR
 
 **Settings and secrets:** the API holds `DATABASE_URL`, `DIRECT_URL`, `SESSION_SECRET`, `RESEND_API_KEY`, `CRON_SECRET`, `WEB_ORIGIN` (in Render's environment settings). The web app only needs `VITE_API_BASE=/api` (no secrets in the frontend). GitHub holds `CRON_SECRET` and `API_URL` for the scheduled job. `.env` files are git-ignored; `.env.example` files are committed.
 
-**Free-tier sleep:** the Render API sleeps after a period without traffic. The first request after that is slow while it wakes up. The demo checklist includes a warm-up call to `/api/health`, and the UI shows "Waking up the server…" when a request takes more than 3 seconds.
+**Slow requests:** serverless cold starts can make the first request after a quiet period slower. When any request takes more than 1 second, the UI shows a loader (a thin progress bar across the top and a small spinner).
 
 ## 7. Repository structure
 

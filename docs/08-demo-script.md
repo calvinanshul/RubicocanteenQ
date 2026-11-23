@@ -4,7 +4,6 @@
 
 ## Set-up checklist (30 min before)
 
-- [ ] **Wake the API** 10 minutes before: open `https://<site>.netlify.app/api/health` (the free Render API sleeps when idle) and keep the tab open
 - [ ] Production URL loads; `/api/health` is green
 - [ ] Demo data reset: `npm run db:seed:demo` (today's menu, ~40 orders spread over the slots for a full dashboard, **Veg Biryani with 1 portion left**)
 - [ ] Browser windows ready: **Employee** (phone or DevTools mobile view), **Staff** (tablet size), **Manager** (desktop)
@@ -39,5 +38,5 @@
 | "What would you do with one more week?" | Should and Could list + retro |
 | "Why did you change your tech decision?" | ADR-001 §3 *What changed between v1 and v2* |
 | "How do cookies work with two hosts?" | `05-architecture.md §1`: the Netlify `/api` proxy keeps everything on one domain |
-| "What if the free API is asleep during the demo?" | Warm-up step in the checklist; the UI shows "Waking up the server…" |
+| "What if the server is slow during the demo?" | The UI shows a loader (top progress bar and spinner) while a request is slow |
 | "Did you follow the AI design blindly?" | `02-requirements.md §6.1` (21 decisions) and prompt journal M-01..M-03 |

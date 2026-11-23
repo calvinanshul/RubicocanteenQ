@@ -198,7 +198,7 @@ The AI design tool added some details that our requirements and data model don't
 | [ ] | BE-71 | Logging | `pino` + `pino-http` (JSON lines): request ID, route, user ID, status, error code; redact `password`, `cookie` and `authorization` | NFR3 | BE-30 | P2 | 0.5 |
 | [ ] | BE-72 | Production test-clock guard | Fail start-up if `ENABLE_TEST_CLOCK=true` and `APP_ENV=production` | TC-API-SYS-02 | BE-19 | P1 | 0.25 |
 | [ ] | BE-73 | Query indexes | Confirm the `(orderDate, slotStart, status)` index; `EXPLAIN` the queue and dashboard queries | NFR1 | BE-60 | P2 | 0.5 |
-| [ ] | BE-74 | Graceful start and stop | Fast start (no heavy work at boot) so wake-ups are quick; on `SIGTERM` close the server and the Prisma connection | NFR7 | BE-30 | P2 | 0.5 |
+| [ ] | BE-74 | Graceful start and stop | Fast start (no heavy work at boot) so cold starts are quick; on `SIGTERM` close the server and the Prisma connection | NFR7 | BE-30 | P2 | 0.5 |
 
 ---
 
@@ -213,7 +213,7 @@ The AI design tool added some details that our requirements and data model don't
 | [ ] | FE-03 | Icons | Material Symbols Outlined (Google Fonts `<link>` or the `material-symbols` npm package) + an `<Icon name="…" />` wrapper with `aria-hidden`; icon-only buttons require `aria-label` | §0.2 | FE-01 | P1 | 0.5 |
 | [ ] | FE-04 | Elevation and utility classes | `shadow-l1`, `shadow-l2`, `shadow-l3`; `tabular-nums` and mono for money and codes | DESIGN.md elevation | FE-01 | P1 | 0.25 |
 | [ ] | FE-05 | Formatting helpers | `formatINR` from `shared`; `formatTime("13:00")`, `relativeMins("In 18 mins")`, `formatDate("Tue 17 Nov")` in IST | D13 | BE-20 | P1 | 0.5 |
-| [ ] | FE-06 | API client | `src/api/client.ts`: typed `fetch` wrapper on `VITE_API_BASE` (`/api`, same origin, `credentials: 'same-origin'`); JSON errors → `ApiError(code, fields)`; 401 → `/login?expired=1`; adds `Idempotency-Key` on order POST; **if a request takes over 3 s, show a "Waking up the server…" banner** (free API sleep) | US-15, NFR7 | BE-17 | P1 | 1.25 |
+| [ ] | FE-06 | API client | `src/api/client.ts`: typed `fetch` wrapper on `VITE_API_BASE` (`/api`, same origin, `credentials: 'same-origin'`); JSON errors → `ApiError(code, fields)`; 401 → `/login?expired=1`; adds `Idempotency-Key` on order POST; **if a request takes over 1 s, show a loader (top progress bar and spinner)** | US-15, NFR7 | BE-17 | P1 | 1.25 |
 | [ ] | FE-07 | Query and auth setup | `QueryClientProvider` (sensible `staleTime`, retry once, no retry on 4xx); `useMe()` hook; `AuthProvider` exposing the user and role | — | FE-06 | P1 | 0.75 |
 
 ### 3.2 Shared UI components (`components/ui`)
@@ -342,7 +342,7 @@ The AI design tool added some details that our requirements and data model don't
 | [x] | DOC-03 | Update `05-data-model.md` (new fields and enum), `05-api-spec.md` (M4 `pickupLocation`, R1 new KPIs), `03-user-stories.md` (US-19 → Must); ADR-001 v2 and architecture for Option B | P1 | 1 |
 | [ ] | DOC-04 | Prompt journal: Stitch design entry and AI design mistakes M-01..M-03 are drafted; **review them, fill in the dates, and add the code-level mistakes as you find them** | P1 | 0.5 |
 | [ ] | DOC-05 | Keep the traceability matrix, bug log and test results updated daily | P1 | 1 |
-| [ ] | DOC-06 | README in the repo root: what it is, live URL, demo accounts, how to run both apps (`npm run dev` starts web + API), test commands, the free-tier wake-up note | P1 | 0.5 |
+| [ ] | DOC-06 | README in the repo root: what it is, live URL, demo accounts, how to run both apps (`npm run dev` starts web + API), test commands, the slow-request loader note | P1 | 0.5 |
 | [ ] | DOC-07 | Demo rehearsal (time it), backup video of the golden path, retrospective | P1 | 2 |
 
 ---

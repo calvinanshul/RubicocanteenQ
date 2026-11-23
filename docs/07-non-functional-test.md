@@ -67,7 +67,7 @@ export const options = {
 http.setResponseCallback(http.expectedStatuses({ min: 200, max: 299 }, 409));
 
 export function setup() {
-  // Warm-up: the free API host sleeps when idle; wake it before measuring
+  // Warm-up: avoid measuring cold starts
   for (let i = 0; i < 10; i++) {
     const r = http.get(`${BASE}/api/health`, { timeout: '90s' });
     if (r.status === 200) return;
@@ -171,4 +171,4 @@ GROUP BY "userId" HAVING COUNT(*) > 1;                                -- expect 
 - 100 VUs is a pilot-scale test, not a capacity test of the whole office. The 300-user stretch target (A10) is a separate run if time allows.
 - The test runs from a single location (your laptop or k6 Cloud's free tier). Network latency is included in the results.
 - The free Render API runs on a small shared instance, and the Netlify proxy adds a network hop. Results show the **free-tier pilot** set-up, not production capacity; record both facts next to the numbers.
-- The warm-up in `setup()` keeps the API's wake-up time out of the measurements. Report the cold-start time separately if you measure it.
+- The warm-up in `setup()` keeps cold starts out of the measurements. Report the cold-start time separately if you measure it.

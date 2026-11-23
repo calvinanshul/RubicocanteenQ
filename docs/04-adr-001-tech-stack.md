@@ -83,7 +83,7 @@ Scores: 1 (poor) to 5 (excellent). The weights reflect the challenge: time and t
 | QR | `qrcode` (server-side PNG) + `html5-qrcode` (camera scanner in the browser) | Integration requirement |
 | CSV | Server-side generation with formula-injection escaping | Integration requirement (S01) |
 | Email (Should) | Resend | Simple API; failures never block orders |
-| Scheduler (Should) | **GitHub Actions scheduled workflow** → `POST /api/cron/no-show` | Works even if the free API server is asleep (it wakes it) |
+| Scheduler (Should) | **GitHub Actions scheduled workflow** → `POST /api/cron/no-show` | Runs on schedule without an always-on process |
 | Frontend hosting | **Netlify** (static) with an `/api/*` **proxy rewrite** to the Render API | The browser sees one site: cookies stay first-party and CORS is barely needed |
 | API hosting | **Render** free web service | Free Node hosting |
 | Database hosting | **Neon** free tier (pooled connection string) | Serverless Postgres, branches for dev and test |
@@ -110,12 +110,12 @@ Scores: 1 (poor) to 5 (excellent). The weights reflect the challenge: time and t
 | Risk | Mitigation |
 |---|---|
 | **Cross-site cookies** (frontend and API on different domains) could be blocked by browsers | Netlify `_redirects`: `/api/*  https://<api>.onrender.com/api/:splat  200`. The browser only talks to the Netlify domain, so the cookie stays first-party with `SameSite=Lax`. Vite's `server.proxy` does the same locally |
-| **Free Render server sleeps** when idle, so the first request can take a long time | Warm up `/api/health` before the demo and the load test; the UI shows "Waking up the server…" if a request takes over 3 s; documented in the demo checklist |
+| **Slow first requests** (serverless cold starts) | The UI shows a loader (top progress bar and spinner) if a request takes over 1 s |
 | Two apps mean two builds and two sets of settings | One monorepo and one CI pipeline; frontend settings are only `VITE_API_BASE=/api` |
 | Prisma has no native **partial unique index** (needed for BR4) | One raw SQL migration |
 | Custom auth is easy to get wrong | Unit tests for hashing, lockout and expiry; RBAC API tests for every role; OWASP checklist review |
-| An in-process `node-cron` would not run while the server sleeps | A GitHub Actions schedule calls the cron endpoint instead (with a secret) |
-| Free-tier limits (DB storage, build minutes, email quota, idle sleep) | Fine for a demo and pilot; check the current limits on each provider's pricing page before go-live |
+| An in-process `node-cron` would not run on serverless hosting | A GitHub Actions schedule calls the cron endpoint instead (with a secret) |
+| Free-tier limits (DB storage, build minutes, email quota) | Fine for a demo and pilot; check the current limits on each provider's pricing page before go-live |
 
 ## 7. Revisit when
 

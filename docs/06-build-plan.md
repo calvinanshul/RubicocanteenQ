@@ -124,4 +124,4 @@ jobs:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
 ```
 
-> GitHub's scheduled runs can be delayed by a few minutes; that's fine for marking no-shows 30 minutes after a slot ends. `--max-time 90` allows for the free API waking up.
+> GitHub's scheduled runs can be delayed by a few minutes; that's fine for marking no-shows 30 minutes after a slot ends. `--max-time 90` allows for a slow cold start.

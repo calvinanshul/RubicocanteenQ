@@ -243,7 +243,7 @@ Canvas file names are given so each screen can be opened directly. "Phone" = 390
 | Double submit | Primary action disables + spinner while sending; orders send an `Idempotency-Key` |
 | Confirmations | Dialog for cancel order, change role, disable user, archive dish |
 | Feedback | Success toast (bottom on phone, top-right on desktop); errors stay inline; `aria-live` for scan results and toasts |
-| Free-tier wake-up | If a request takes > 3 s, show a top banner "Waking up the server…" |
+| Slow request | If a request takes > 1 s, show a loader: a thin progress bar across the top and a small spinner (no text; screen readers hear "Loading…") |
 | Motion | 150–200 ms ease-out on hover, press and status change; READY gets a short highlight; respect `prefers-reduced-motion` |
 
 ---

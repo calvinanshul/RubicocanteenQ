@@ -104,7 +104,7 @@
 | NFR4 | Usability | Place an order in **≤ 4 taps** from the menu; tap targets ≥ 44 px | Manual UI test |
 | NFR5 | Accessibility | Lighthouse accessibility score ≥ 90 on key screens | Lighthouse (optional) |
 | NFR6 | Responsiveness | No horizontal scroll at 360 px | Playwright mobile project |
-| NFR7 | Availability | Best effort on free tiers; health endpoint `/api/health`. The free API host sleeps when idle, so the first request after a quiet period is slow; the UI shows a "waking up" message | Manual |
+| NFR7 | Availability | Best effort on free tiers; health endpoint `/api/health`. When a request takes over 1 s, the UI shows a loader (top progress bar and spinner) | Manual |
 
 ## 5. MVP definition
 

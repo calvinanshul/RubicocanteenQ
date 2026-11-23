@@ -1,5 +1,7 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { Icon } from './Icon';
+import { useScrollLock } from './scrollLock';
 
 interface DialogProps {
   open: boolean;
@@ -10,10 +12,11 @@ interface DialogProps {
   icon?: string;
 }
 
-/** Modal dialog: traps focus, closes on Esc and scrim click, restores focus on close. */
+/** Modal dialog: centered over a blurred, scroll-locked page; traps focus, closes on Esc and scrim click, restores focus on close. */
 export function Dialog({ open, title, onClose, children, footer, icon }: DialogProps) {
   const ref = useRef<HTMLDivElement>(null);
   const titleId = useId();
+  useScrollLock(open);
 
   useEffect(() => {
     if (!open) return;
@@ -47,10 +50,11 @@ export function Dialog({ open, title, onClose, children, footer, icon }: DialogP
     };
   }, [open, onClose]);
 
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-[rgba(43,33,27,0.45)] p-0 sm:items-center sm:p-4" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div ref={ref} role="dialog" aria-modal="true" aria-labelledby={titleId} className="w-full max-w-lg overflow-hidden rounded-t-dialog bg-white shadow-l3 sm:rounded-dialog">
+  if (!open || typeof document === 'undefined') return null;
+  // Portal to <body>: a transformed ancestor (page animations) would otherwise pin `fixed` to that ancestor
+  return createPortal(
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overscroll-contain bg-[rgba(43,33,27,0.35)] p-4 backdrop-blur-sm" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+      <div ref={ref} role="dialog" aria-modal="true" aria-labelledby={titleId} className="my-auto w-full max-w-lg overflow-hidden rounded-dialog bg-white shadow-l3">
         <div className="flex items-center gap-3 px-5 py-4">
           {icon && (
             <span className="inline-flex h-10 w-10 items-center justify-center rounded-tile bg-primary-tint text-primary">
@@ -65,6 +69,7 @@ export function Dialog({ open, title, onClose, children, footer, icon }: DialogP
         <div className="px-5 pb-5">{children}</div>
         {footer && <div className="flex flex-wrap justify-end gap-2 border-t border-border-sand bg-surface-card-warm px-5 py-4">{footer}</div>}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

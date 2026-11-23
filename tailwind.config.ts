@@ -46,10 +46,6 @@ export default {
         focus: '0 0 0 3px #F3E8DC',
       },
       maxWidth: { content: '1240px' },
-      keyframes: {
-        'loader-bar': { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(300%)' } },
-      },
-      animation: { 'loader-bar': 'loader-bar 1.2s ease-in-out infinite' },
     },
   },
   plugins: [],

@@ -19,3 +19,4 @@ export * from './SegmentedTabs';
 export * from './StatusStepper';
 export * from './KpiTile';
 export * from './ProgressBar';
+export * from './scrollLock';

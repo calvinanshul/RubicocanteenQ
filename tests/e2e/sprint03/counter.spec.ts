@@ -64,6 +64,7 @@ test('TC-UI-10 scan errors: collected, wrong day, unknown', async ({ browser }) 
   await staff.getByLabel('Pickup code').fill(code);
   await staff.getByRole('button', { name: 'Find' }).click();
   await staff.getByRole('button', { name: /hand over/i }).click();
+  await expect(staff.getByText('Handed over')).toBeVisible();
   await staff.getByLabel('Pickup code').fill(code);
   await staff.getByRole('button', { name: 'Find' }).click();
   await expect(staff.getByRole('main').getByRole('alert')).toContainText('Already collected at');

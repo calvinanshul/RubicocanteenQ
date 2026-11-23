@@ -1,6 +1,6 @@
 'use client';
 
-import { CATEGORY_LABELS, formatINR, type Category, type DailyMenuItemDto } from '@/shared';
+import { CATEGORY_LABELS, OPEN_ORDER_STATUSES, formatINR, type Category, type DailyMenuItemDto } from '@/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -65,7 +65,8 @@ export function MenuPage() {
     if (data?.orderingOpen && msLeft !== null && msLeft <= 0) void qc.invalidateQueries({ queryKey: ['daily-menu', date] });
   }, [data?.orderingOpen, msLeft, qc, date]);
 
-  const activeOrder = myOrders.data?.items.find((o) => o.status !== 'CANCELLED');
+  // Only an order still in progress blocks ordering; once it's collected the employee can order again
+  const activeOrder = myOrders.data?.items.find((o) => (OPEN_ORDER_STATUSES as readonly string[]).includes(o.status));
   const orderingDisabled = !data?.orderingOpen || Boolean(activeOrder);
   const maxQty = settings?.maxQtyPerItem ?? 5;
   const cart = cartFor(date);
@@ -128,14 +129,14 @@ export function MenuPage() {
           {activeOrder && (
             <Alert
               tone="info"
-              title={`You already have an order for ${day === 'today' ? 'today' : 'tomorrow'}.`}
+              title={`You already have an order in progress for ${day === 'today' ? 'today' : 'tomorrow'}.`}
               action={
                 <Link href={`/orders/${activeOrder.id}`} className="inline-flex min-h-[44px] items-center gap-1 rounded-btn px-3 text-label-lg font-semibold text-primary-active hover:underline">
                   View <Icon name="arrow_forward" size={18} />
                 </Link>
               }
             >
-              Cancel it before the cut-off if you want to order something else.
+              You can order again once it's collected, or cancel it before the cut-off.
             </Alert>
           )}
         </div>

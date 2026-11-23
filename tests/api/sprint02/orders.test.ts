@@ -84,6 +84,25 @@ describe.skipIf(!sprintActive(2))('Sprint 02 · place order (O1)', () => {
     expect(await remaining(dish.dailyMenuItemId)).toBe(9);
   });
 
+  it('TC-API-ORD-04b a new order is allowed once the previous one is collected, not before', async () => {
+    const dish = await seedDailyItem({ date: TODAY, quantity: 10 });
+    const { agent } = await agentFor('EMPLOYEE');
+    const first = await placeOrder(agent, { date: TODAY, items: [{ dailyMenuItemId: dish.dailyMenuItemId, qty: 1 }] }, AT_1015).expect(201);
+
+    for (const status of ['PREPARING', 'READY'] as const) {
+      await prisma.order.update({ where: { id: first.body.id }, data: { status } });
+      const blocked = await placeOrder(agent, { date: TODAY, items: [{ dailyMenuItemId: dish.dailyMenuItemId, qty: 1 }] }, AT_1015);
+      expect(blocked.status).toBe(409);
+      expectErrorShape(blocked.body, 'ORDER_EXISTS_FOR_DATE');
+    }
+
+    await prisma.order.update({ where: { id: first.body.id }, data: { status: 'COLLECTED', collectedAt: new Date() } });
+    const again = await placeOrder(agent, { date: TODAY, items: [{ dailyMenuItemId: dish.dailyMenuItemId, qty: 1 }] }, AT_1015);
+    expect(again.status).toBe(201);
+    expect(again.body.id).not.toBe(first.body.id);
+    expect(await remaining(dish.dailyMenuItemId)).toBe(8);
+  });
+
   it.each([
     ['qty 6', { items: [{ qty: 6 }] }, 'items.0.qty'],
     ['qty 0', { items: [{ qty: 0 }] }, 'items.0.qty'],

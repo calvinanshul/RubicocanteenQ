@@ -1,5 +1,5 @@
 import { Prisma, type Order, type OrderItem, type Settings } from '@prisma/client';
-import type { MyOrdersPage, MyOrdersSummary, OrderDto, OrderInput, SlotDto } from '@/shared';
+import { OPEN_ORDER_STATUSES, type MyOrdersPage, type MyOrdersSummary, type OrderDto, type OrderInput, type SlotDto } from '@/shared';
 import { addDays, dbDate, fromDbDate, todayIST } from '../adapters/clock';
 import { prisma } from '../db';
 import { AppError } from '../errors';
@@ -101,8 +101,9 @@ export async function placeOrder(
   if (Object.keys(notOnMenu).length) {
     throw new AppError('VALIDATION_ERROR', 400, 'Item not on the menu for this date', notOnMenu);
   }
-  const active = await prisma.order.findFirst({ where: { userId, orderDate: dbDate(date), status: { not: 'CANCELLED' } } });
-  if (active) throw orderExists();
+  // BR4: one open order at a time; a collected or cancelled order doesn't block a new one
+  const open = await prisma.order.findFirst({ where: { userId, orderDate: dbDate(date), status: { in: [...OPEN_ORDER_STATUSES] } } });
+  if (open) throw orderExists();
 
   const totalPaise = items.reduce((sum, it) => sum + it.qty * (byId.get(it.dailyMenuItemId)?.menuItem.pricePaise ?? 0), 0);
 
@@ -160,7 +161,7 @@ export async function placeOrder(
         const winner = await prisma.order.findUnique({ where: { idempotencyKey: key }, include: { items: true } });
         if (winner) return { order: toOrderDto(winner, settings, nowInstant), created: false };
       }
-      // BR4 partial unique index (one active order per user per day) as the last line of defence
+      // BR4 partial unique index (one open order per user per day) as the last line of defence
       if (isUniqueViolation(err, 'userId') || isUniqueViolation(err, 'order_one_active_per_day')) throw orderExists();
       throw err;
     }
@@ -172,7 +173,7 @@ function orderExists(): AppError {
   return new AppError(
     'ORDER_EXISTS_FOR_DATE',
     409,
-    'You already have an order for this day. Cancel it to order again.',
+    'You already have an order in progress for this day. You can order again once it is collected, or cancel it.',
   );
 }
 

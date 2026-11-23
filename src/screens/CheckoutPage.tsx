@@ -26,7 +26,7 @@ function errorMessage(err: ApiError, cutoff: string | undefined): string {
     case 'SLOT_FULL':
       return 'This slot just filled up. Pick another.';
     case 'ORDER_EXISTS_FOR_DATE':
-      return 'You already have an order for this day. Cancel it to order again.';
+      return 'You already have an order in progress for this day. You can order again once it is collected, or cancel it.';
     case 'NETWORK_ERROR':
       return err.message;
     default:

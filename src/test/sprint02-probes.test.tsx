@@ -188,9 +188,20 @@ describe('S3 already ordered (AC 03-4)', () => {
       orders: { items: [{ id: 77, status: 'PLACED', date: tomorrow }], page: 1, pageSize: 10, total: 1 },
     });
     renderRoute('/menu?day=tomorrow');
-    expect(await screen.findByText('You already have an order for tomorrow.')).toBeInTheDocument();
+    expect(await screen.findByText('You already have an order in progress for tomorrow.')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /View/ })).toHaveAttribute('href', '/orders/77');
     await waitFor(() => expect(within(screen.getByRole('article', { name: 'Veg Biryani' })).getByRole('button', { name: 'Add' })).toBeDisabled());
+  });
+
+  it('EC-02-UI16b a collected order does not block ordering again', async () => {
+    const tomorrow = addDays(TODAY, 1);
+    api({
+      menu: menu(tomorrow, [item(1, 'Veg Biryani')]),
+      orders: { items: [{ id: 78, status: 'COLLECTED', date: tomorrow }], page: 1, pageSize: 10, total: 1 },
+    });
+    renderRoute('/menu?day=tomorrow');
+    await waitFor(() => expect(within(screen.getByRole('article', { name: 'Veg Biryani' })).getByRole('button', { name: 'Add' })).toBeEnabled());
+    expect(screen.queryByText(/You already have an order/)).not.toBeInTheDocument();
   });
 });
 

@@ -132,7 +132,7 @@ export function useSlots(date: string) {
   return useQuery({ queryKey: ['slots', date], queryFn: () => api<SlotDto[]>(`/slots?date=${date}`), refetchInterval: 30_000, enabled: Boolean(date) });
 }
 
-/** O2 filtered to one date: used for "You already have an order". */
+/** O2 filtered to one date: used for "You already have an order in progress". */
 export function useMyOrdersOn(date: string, enabled = true) {
   return useQuery({
     queryKey: ['my-orders', date],

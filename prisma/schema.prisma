@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // pooled
+  directUrl = env("DIRECT_URL") // migrations
+}
+
+enum Role {
+  EMPLOYEE
+  STAFF
+  MANAGER
+  ADMIN
+}
+
+enum OrderStatus {
+  PLACED
+  PREPARING
+  READY
+  COLLECTED
+  CANCELLED
+  NO_SHOW
+}
+
+enum Category {
+  MAIN
+  COMBO
+  LIGHT
+  SIDE
+  DESSERT
+  BEVERAGE
+}
+
+enum Diet {
+  VEG
+  NON_VEG
+  JAIN
+}
+
+model User {
+  id                 Int       @id @default(autoincrement())
+  name               String    @db.VarChar(80)
+  email              String    @unique @db.VarChar(254)
+  passwordHash       String
+  role               Role      @default(EMPLOYEE)
+  employeeCode       String?   @db.VarChar(20)
+  department         String?   @db.VarChar(60)
+  isActive           Boolean   @default(true)
+  failedLoginCount   Int       @default(0)
+  /// Start of the current 15-minute failed-login window (BR11)
+  failedLoginWindowStart DateTime?
+  lockedUntil        DateTime?
+  createdAt          DateTime  @default(now())
+  orders             Order[]   @relation("OrderOwner")
+  collected          Order[]   @relation("OrderCollector")
+}
+
+model Settings {
+  id                 Int      @id @default(1)
+  orderCutoff        String   @default("11:00") // HH:mm IST
+  slotStart          String   @default("12:30")
+  slotEnd            String   @default("14:30")
+  slotMinutes        Int      @default(15)
+  slotCapacity       Int      @default(30)
+  pickupLocation     String   @default("Main canteen counter") @db.VarChar(80)
+  maxQtyPerItem      Int      @default(5)
+  allowedDomains     String   @default("rubicotech.com,rubicotech.in")
+  closedWeekdays     Int[]    @default([0, 6])
+  noShowGraceMinutes Int      @default(30)
+  updatedAt          DateTime @updatedAt
+}
+
+model ClosedDate {
+  date   DateTime @id @db.Date
+  reason String   @db.VarChar(120)
+}
+
+model MenuItem {
+  id          Int             @id @default(autoincrement())
+  name        String          @db.VarChar(80)
+  description String?         @db.VarChar(300)
+  category    Category
+  pricePaise  Int
+  diet        Diet
+  isActive    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  dailyItems  DailyMenuItem[]
+}
+
+model DailyMenuItem {
+  id         Int         @id @default(autoincrement())
+  menuDate   DateTime    @db.Date
+  menuItemId Int
+  quantity   Int
+  orderedQty Int         @default(0)
+  menuItem   MenuItem    @relation(fields: [menuItemId], references: [id])
+  orderItems OrderItem[]
+
+  @@unique([menuDate, menuItemId])
+}
+
+model Order {
+  id             Int         @id @default(autoincrement())
+  userId         Int
+  orderDate      DateTime    @db.Date
+  slotStart      String // "13:00"
+  status         OrderStatus @default(PLACED)
+  totalPaise     Int
+  pickupCode     String      @unique @db.Char(6)
+  idempotencyKey String?     @unique
+  createdAt      DateTime    @default(now())
+  cancelledAt    DateTime?
+  readyAt        DateTime?
+  collectedAt    DateTime?
+  collectedById  Int?
+  user           User        @relation("OrderOwner", fields: [userId], references: [id])
+  collectedBy    User?       @relation("OrderCollector", fields: [collectedById], references: [id])
+  items          OrderItem[]
+
+  @@index([orderDate, slotStart, status])
+}
+
+model OrderItem {
+  id                     Int           @id @default(autoincrement())
+  orderId                Int
+  dailyMenuItemId        Int
+  itemNameSnapshot       String
+  unitPricePaiseSnapshot Int
+  qty                    Int
+  order                  Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  dailyMenuItem          DailyMenuItem @relation(fields: [dailyMenuItemId], references: [id])
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  actorId   Int
+  action    String
+  entity    String
+  entityId  Int
+  before    Json?
+  after     Json?
+  createdAt DateTime @default(now())
+}

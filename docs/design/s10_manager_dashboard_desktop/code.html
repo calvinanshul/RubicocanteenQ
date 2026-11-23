@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "status-warning-border": "#FDE68A",
+          "secondary": "#15803D",
+          "background": "#FBF6EF",
+          "inverse-on-surface": "#ffede4",
+          "outline-variant": "#EAD7C5",
+          "surface-container-highest": "#f2dfd5",
+          "on-tertiary": "#ffffff",
+          "primary-fixed": "#ffdbd0",
+          "on-primary-container": "#ffffff",
+          "surface-dim": "#e9d6cd",
+          "surface-bright": "#fff8f5",
+          "fssai-veg": "#15803D",
+          "on-tertiary-container": "#ffece7",
+          "outline": "#8d7168",
+          "on-surface": "#2B211B",
+          "inverse-surface": "#392e28",
+          "on-primary-fixed-variant": "#832600",
+          "surface-container": "#F3E8DC",
+          "tertiary": "#8f3b1f",
+          "border-sand": "#F3E8DC",
+          "error": "#ba1a1a",
+          "status-warning-bg": "#FEF3C7",
+          "on-primary-fixed": "#390c00",
+          "on-error-container": "#93000a",
+          "surface-variant": "#f2dfd5",
+          "surface-tint": "#c2410c",
+          "surface-cream": "#FBF6EF",
+          "surface-card": "#FFFFFF",
+          "on-secondary": "#ffffff",
+          "surface-card-warm": "#FFFDF9",
+          "surface": "#FBF6EF",
+          "on-primary": "#ffffff",
+          "on-error": "#ffffff",
+          "tertiary-fixed-dim": "#ffb59e",
+          "text-secondary": "#6E5D53",
+          "secondary-fixed-dim": "#bbf7d0",
+          "fssai-veg-bg": "#F0FDF4",
+          "surface-container-lowest": "#ffffff",
+          "on-surface-variant": "#6E5D53",
+          "on-tertiary-fixed-variant": "#7c2d12",
+          "fssai-non-veg": "#7C2D12",
+          "text-primary": "#2B211B",
+          "primary-container": "#C2410C",
+          "on-secondary-fixed": "#14532d",
+          "primary": "#C2410C",
+          "error-container": "#FEE2E2",
+          "on-background": "#2B211B",
+          "on-secondary-container": "#166534",
+          "status-warning-text": "#B45309",
+          "surface-container-low": "#FFF8F5",
+          "fssai-non-veg-bg": "#FEF2F2",
+          "primary-fixed-dim": "#ffb59d",
+          "surface-container-high": "#f7e4db",
+          "tertiary-container": "#ae5234",
+          "tertiary-fixed": "#FEF3C7",
+          "border-sand-strong": "#EAD7C5",
+          "inverse-primary": "#ffb59d",
+          "on-secondary-fixed-variant": "#15803D",
+          "secondary-container": "#DCFCE7",
+          "on-tertiary-fixed": "#B45309",
+          "secondary-fixed": "#dcfce7"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "margin-desktop": "2rem",
+          "space-lg": "1.5rem",
+          "space-md": "1rem",
+          "space-xl": "2rem",
+          "space-sm": "0.5rem",
+          "gutter": "1rem",
+          "space-xs": "0.25rem",
+          "gutter-desktop": "1.5rem",
+          "margin": "1rem",
+          "gutter-mobile": "0.75rem",
+          "margin-mobile": "1rem"
+        },
+        "fontFamily": {
+          "body-sm": [
+            "Plus Jakarta Sans"
+          ],
+          "label-lg": [
+            "Plus Jakarta Sans"
+          ],
+          "body-lg": [
+            "Plus Jakarta Sans"
+          ],
+          "headline-lg": [
+            "Plus Jakarta Sans"
+          ],
+          "headline-sm": [
+            "Plus Jakarta Sans"
+          ],
+          "body-md": [
+            "Plus Jakarta Sans"
+          ],
+          "headline-md": [
+            "Plus Jakarta Sans"
+          ],
+          "label-md": [
+            "Plus Jakarta Sans"
+          ],
+          "headline-xl-mobile": [
+            "Plus Jakarta Sans"
+          ],
+          "ticket-code-sm": [
+            "JetBrains Mono"
+          ],
+          "ticket-code-lg": [
+            "JetBrains Mono"
+          ],
+          "ticket-timestamp": [
+            "JetBrains Mono"
+          ],
+          "headline-xl": [
+            "Plus Jakarta Sans"
+          ]
+        },
+        "fontSize": {
+          "body-sm": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "fontWeight": "400"
+            }
+          ],
+          "label-lg": [
+            "14px",
+            {
+              "lineHeight": "20px",
+              "fontWeight": "600"
+            }
+          ],
+          "body-lg": [
+            "16px",
+            {
+              "lineHeight": "24px",
+              "fontWeight": "400"
+            }
+          ],
+          "headline-lg": [
+            "24px",
+            {
+              "lineHeight": "32px",
+              "fontWeight": "700"
+            }
+          ],
+          "headline-sm": [
+            "16px",
+            {
+              "lineHeight": "24px",
+              "fontWeight": "600"
+            }
+          ],
+          "body-md": [
+            "14px",
+            {
+              "lineHeight": "20px",
+              "fontWeight": "400"
+            }
+          ],
+          "headline-md": [
+            "20px",
+            {
+              "lineHeight": "28px",
+              "fontWeight": "600"
+            }
+          ],
+          "label-md": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "fontWeight": "500"
+            }
+          ],
+          "headline-xl-mobile": [
+            "28px",
+            {
+              "lineHeight": "36px",
+              "fontWeight": "700"
+            }
+          ],
+          "ticket-code-sm": [
+            "14px",
+            {
+              "lineHeight": "18px",
+              "fontWeight": "600"
+            }
+          ],
+          "ticket-code-lg": [
+            "32px",
+            {
+              "lineHeight": "36px",
+              "fontWeight": "700"
+            }
+          ],
+          "ticket-timestamp": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "fontWeight": "500"
+            }
+          ],
+          "headline-xl": [
+            "36px",
+            {
+              "lineHeight": "44px",
+              "fontWeight": "700"
+            }
+          ]
+        }
+      }
+    }
+  };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-lowest border-r border-border-sand shadow-[0_1px_8px_rgba(43,33,27,0.04)] z-50 flex flex-col justify-between"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center gap-space-sm"><img alt="CanteenQ Brand Mark" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrCBzvjrNI301s_4D6oBvMjFSEphkgs2rcuMmjREWzmiZNQgWA9XEy5e_Z-vOsEOV1FeC9tCb01DboOIH1psZWOx_Ox3UQePOLG4PnAQtXC8rCZFnp3hsgI_pfswZpOY9QUgew0ynv8o2ZVGoseprsI2IVRjhf5Z5nssIRcy5eVHJ6_aPB93HGShQdjkGuSQkeptkAsAt7BCFsrWjrqpI39YaV1QWSNePiRiI0xOno2mag"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface leading-tight tracking-tight">CanteenQ</span><span class="font-label-md text-label-md text-on-surface-variant font-normal">Manager Portal</span></div></div><div class="px-space-md py-space-xs"><div class="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-secondary-container text-on-secondary-container"><span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span><span class="font-label-md text-label-md font-medium">Lunch Service: Active</span></div></div><nav class="flex flex-col gap-space-xs px-space-sm mt-space-md" data-active-classes="bg-primary text-on-primary font-headline-sm shadow-sm"><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg transition-all bg-primary text-on-primary font-headline-sm shadow-sm hover:bg-[#9A3412]" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-label-lg text-label-lg">Dashboard</span></a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="daily-menu-editor" href="#"><span class="material-symbols-outlined text-[20px]">edit_calendar</span><span class="font-label-lg text-label-lg">Daily Menu Editor</span></a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="menu-catalogue" href="#"><span class="material-symbols-outlined text-[20px]">restaurant_menu</span><span class="font-label-lg text-label-lg">Menu Catalogue</span></a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="orders-queue-and-prep" href="#"><span class="material-symbols-outlined text-[20px]">order_approve</span><span class="font-label-lg text-label-lg">Orders Queue &amp; Prep</span></a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="settings-and-rules" href="#"><span class="material-symbols-outlined text-[20px]">tune</span><span class="font-label-lg text-label-lg">Settings &amp; Rules</span></a></nav></div><div class="p-space-md bg-surface-container-low border border-border-sand rounded-xl m-space-sm flex items-center justify-between"><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface-variant">Terminal Sync</span><span class="font-ticket-code-sm text-ticket-code-sm text-secondary font-medium">Online (100%)</span></div><span class="material-symbols-outlined text-secondary text-[18px]">cloud_done</span></div></aside><div class="pl-64 flex flex-col min-h-screen"><header class="fixed top-0 left-64 right-0 h-16 bg-surface-cream/90 backdrop-blur-xl border-b border-border-sand shadow-[0_1px_8px_rgba(43,33,27,0.04)] z-40"><div class="h-16 w-full px-space-lg flex items-center justify-between"><div class="flex items-center gap-space-sm"><span class="font-body-md text-body-md text-on-surface-variant flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px] text-primary">calendar_today</span>Tue 17 Nov 2026</span></div><div class="flex items-center gap-space-md"><button class="inline-flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-surface-container-lowest border border-border-sand text-on-surface font-label-lg text-label-lg hover:bg-surface-container-low transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">file_download</span>Export</button><div class="h-8 w-px bg-border-sand"></div><div class="flex items-center gap-space-sm"><div class="flex flex-col text-right"><span class="font-label-lg text-label-lg text-on-surface leading-tight">Ramesh Iyer</span><span class="font-label-md text-label-md text-on-surface-variant leading-tight">Canteen Manager</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-border-sand" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4DuDUam_756VdQuJGUspBAr6AoDGGHPgJA8XKM_Le2UA2uZ6steFhJ4j8YofawkVZrlQNK1gbUVRpRBLiGzM44pal9-2_OWZWN2GsWcinEpncX5krciYY3crNQnxH47Hq23Upb32IRj8EW5PRrePnYac9xdmO-KToTLr5X-fT1dubmkauZkqH0CNzOAaONU_lxSBVsv4iK9wzImsB3oU7g3ttW7Ufw5l28MPGErTI"/></div></div></div></header><main class="relative pt-16 bg-surface-cream min-h-screen w-full px-space-lg py-space-lg"><div class="flex flex-col w-full">
+<!-- Dynamic Operational Ambient Light -->
+<div class="relative w-full mb-space-lg">
+<div class="absolute -top-10 left-1/4 w-96 h-32 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -top-6 right-10 w-72 h-28 bg-primary/5 rounded-full blur-2xl pointer-events-none"></div>
+<!-- Top Action Bar -->
+<div class="relative flex flex-col md:flex-row md:items-center justify-between gap-space-md bg-surface-card p-space-md rounded-xl border border-border-sand shadow-sm">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Canteen Overview &amp; Operations</span>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-ticket-code-sm text-ticket-code-sm font-semibold">
+            LIVE SYNC
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">High-cadence kitchen inventory routing &amp; live counter fulfillment console</p>
+</div>
+<div class="flex items-center flex-wrap gap-space-sm">
+<!-- Date Selector Module -->
+<div class="flex items-center bg-surface-container-low border border-border-sand px-space-md py-2 rounded-lg gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-[18px] text-primary">calendar_month</span>
+<span class="font-label-lg text-label-lg">Tue 17 Nov 2026</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant ml-1 cursor-pointer">arrow_drop_down</span>
+</div>
+<button class="inline-flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-surface-container-low border border-border-sand text-on-surface font-label-lg text-label-lg hover:bg-surface-container transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">checklist</span>
+          View Prep List
+        </button>
+<button class="inline-flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-primary hover:bg-[#9A3412] text-on-primary font-label-lg text-label-lg transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+          Export CSV
+        </button>
+</div>
+</div>
+</div>
+<!-- KPI Tiles Grid (6 Metrics) -->
+<section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-space-md mb-space-xl">
+<!-- Total Orders -->
+<div class="bg-surface-card border border-border-sand p-space-md rounded-xl shadow-sm flex flex-col justify-between group hover:border-border-sand-strong transition-all">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md font-medium">Total Orders</span>
+<span class="material-symbols-outlined text-[18px] text-primary">receipt_long</span>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-ticket-code-lg text-ticket-code-lg text-on-surface tracking-tight">120</span>
+<span class="font-label-md text-label-md text-on-surface-variant">tkts</span>
+</div>
+<div class="mt-space-xs pt-1 flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-secondary font-medium flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>+14%
+        </span>
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant">vs yesterday</span>
+</div>
+</div>
+<!-- Total Revenue -->
+<div class="bg-surface-card border border-border-sand p-space-md rounded-xl shadow-sm flex flex-col justify-between group hover:border-border-sand-strong transition-all">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md font-medium">Total Revenue</span>
+<span class="material-symbols-outlined text-[18px] text-primary">payments</span>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-ticket-code-lg text-ticket-code-lg text-on-surface tracking-tight">₹13,800</span>
+</div>
+<div class="mt-space-xs pt-1 flex items-center justify-between">
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant">Avg: ₹115/order</span>
+<span class="font-ticket-code-sm text-ticket-code-sm text-secondary font-medium">92% online</span>
+</div>
+</div>
+<!-- Collected (Green) -->
+<div class="bg-surface-card border border-border-sand p-space-md rounded-xl shadow-sm flex flex-col justify-between group hover:border-border-sand-strong transition-all">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md font-medium">Collected</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">check_circle</span>
+</div>
+<div class="flex items-baseline justify-between">
+<span class="font-ticket-code-lg text-ticket-code-lg text-secondary">90</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md font-semibold">
+          75.0%
+        </span>
+</div>
+<div class="mt-space-xs pt-1">
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</div>
+<!-- Pending / In-Queue (Amber) -->
+<div class="bg-surface-card border border-border-sand p-space-md rounded-xl shadow-sm flex flex-col justify-between group hover:border-border-sand-strong transition-all">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md font-medium">Pending / In-Queue</span>
+<span class="material-symbols-outlined text-[18px] text-status-warning-text">hourglass_top</span>
+</div>
+<div class="flex items-baseline justify-between">
+<span class="font-ticket-code-lg text-ticket-code-lg text-status-warning-text">20</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-status-warning-bg text-status-warning-text font-label-md text-label-md font-semibold">
+          Active
+        </span>
+</div>
+<div class="mt-space-xs pt-1 flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Est. wait ~6m</span>
+<span class="w-2 h-2 rounded-full bg-status-warning-text animate-pulse"></span>
+</div>
+</div>
+<!-- Cancelled (Neutral Grey) -->
+<div class="bg-surface-card border border-border-sand p-space-md rounded-xl shadow-sm flex flex-col justify-between group hover:border-border-sand-strong transition-all">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md font-medium">Cancelled</span>
+<span class="material-symbols-outlined text-[18px] text-outline">cancel</span>
+</div>
+<div class="flex items-baseline justify-between">
+<span class="font-ticket-code-lg text-ticket-code-lg text-on-surface">6</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md">
+          5.0%
+        </span>
+</div>
+<div class="mt-space-xs pt-1">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Refunded auto</span>
+</div>
+</div>
+<!-- No-Show (Red) -->
+<div class="bg-surface-card border border-border-sand p-space-md rounded-xl shadow-sm flex flex-col justify-between group hover:border-border-sand-strong transition-all">
+<div class="flex items-center justify-between text-on-surface-variant mb-space-xs">
+<span class="font-label-md text-label-md font-medium">No-Show</span>
+<span class="material-symbols-outlined text-[18px] text-error">person_off</span>
+</div>
+<div class="flex items-baseline justify-between">
+<span class="font-ticket-code-lg text-ticket-code-lg text-error">4</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-error-container text-error font-label-md text-label-md font-semibold">
+          Action req.
+        </span>
+</div>
+<div class="mt-space-xs pt-1">
+<span class="font-body-sm text-body-sm text-error font-medium">Counter 3 holding</span>
+</div>
+</div>
+</section>
+<!-- Core Operations Split Layout -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg mb-space-xl">
+<!-- Left Column: Items to Prepare & Stock Progress (7 Cols) -->
+<div class="lg:col-span-7 bg-surface-card border border-border-sand p-space-lg rounded-xl shadow-sm flex flex-col">
+<div class="flex items-center justify-between pb-space-sm mb-space-md border-b border-border-sand">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">skillet</span>
+<span class="font-headline-md text-headline-md text-on-surface">Items to Prepare &amp; Stock Progress</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant bg-surface-container px-2.5 py-1 rounded font-medium">6 Active Dishes</span>
+</div>
+<div class="flex flex-col gap-space-md">
+<!-- Item 1: Veg Biryani (100% Sold Out) -->
+<div class="p-space-sm rounded-lg bg-surface-container-low border border-border-sand transition-all hover:bg-surface-container/60">
+<div class="flex items-start justify-between mb-1.5">
+<div class="flex items-center gap-space-xs">
+<!-- Veg Marker -->
+<span class="w-4 h-4 rounded-sm flex items-center justify-center bg-fssai-veg-bg border border-fssai-veg shadow-xs" title="Vegetarian">
+<span class="w-2 h-2 rounded-full bg-fssai-veg"></span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Veg Biryani</span>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface-variant">Portion Limit: 80</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface font-semibold">80 / 80</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-error-container text-error font-label-md text-label-md font-semibold">
+                Sold Out
+              </span>
+</div>
+</div>
+<div class="w-full bg-border-sand h-2 rounded-full overflow-hidden">
+<div class="bg-error h-full rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<!-- Item 2: Chicken Curry (90% - 3 Left) -->
+<div class="p-space-sm rounded-lg bg-surface-container-low border border-border-sand transition-all hover:bg-surface-container/60">
+<div class="flex items-start justify-between mb-1.5">
+<div class="flex items-center gap-space-xs">
+<!-- Non-Veg Marker -->
+<span class="w-4 h-4 rounded-sm flex items-center justify-center bg-fssai-non-veg-bg border border-fssai-non-veg shadow-xs" title="Non-Vegetarian">
+<span class="w-0 h-0 border-l-[3.5px] border-l-transparent border-r-[3.5px] border-r-transparent border-b-[6px] border-b-fssai-non-veg"></span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Chicken Curry</span>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface-variant">Portion Limit: 30</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface font-semibold">27 / 30</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-status-warning-bg text-status-warning-text font-label-md text-label-md font-semibold">
+                3 Left
+              </span>
+</div>
+</div>
+<div class="w-full bg-border-sand h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 90%"></div>
+</div>
+</div>
+<!-- Item 3: Paneer Butter Masala (100% Sold Out) -->
+<div class="p-space-sm rounded-lg bg-surface-container-low border border-border-sand transition-all hover:bg-surface-container/60">
+<div class="flex items-start justify-between mb-1.5">
+<div class="flex items-center gap-space-xs">
+<!-- Veg Marker -->
+<span class="w-4 h-4 rounded-sm flex items-center justify-center bg-fssai-veg-bg border border-fssai-veg shadow-xs" title="Vegetarian">
+<span class="w-2 h-2 rounded-full bg-fssai-veg"></span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Paneer Butter Masala</span>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface-variant">Portion Limit: 40</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface font-semibold">40 / 40</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-error-container text-error font-label-md text-label-md font-semibold">
+                Sold Out
+              </span>
+</div>
+</div>
+<div class="w-full bg-border-sand h-2 rounded-full overflow-hidden">
+<div class="bg-error h-full rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<!-- Item 4: Dal Tadka + Rice (32% - 41 Left) -->
+<div class="p-space-sm rounded-lg bg-surface-container-low border border-border-sand transition-all hover:bg-surface-container/60">
+<div class="flex items-start justify-between mb-1.5">
+<div class="flex items-center gap-space-xs">
+<!-- Veg Marker -->
+<span class="w-4 h-4 rounded-sm flex items-center justify-center bg-fssai-veg-bg border border-fssai-veg shadow-xs" title="Vegetarian">
+<span class="w-2 h-2 rounded-full bg-fssai-veg"></span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Dal Tadka + Rice</span>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface-variant">Portion Limit: 60</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface font-semibold">19 / 60</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md">
+                41 Left
+              </span>
+</div>
+</div>
+<div class="w-full bg-border-sand h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 32%"></div>
+</div>
+</div>
+<!-- Item 5: Curd Rice (55% - 18 Left) -->
+<div class="p-space-sm rounded-lg bg-surface-container-low border border-border-sand transition-all hover:bg-surface-container/60">
+<div class="flex items-start justify-between mb-1.5">
+<div class="flex items-center gap-space-xs">
+<!-- Veg Marker -->
+<span class="w-4 h-4 rounded-sm flex items-center justify-center bg-fssai-veg-bg border border-fssai-veg shadow-xs" title="Vegetarian">
+<span class="w-2 h-2 rounded-full bg-fssai-veg"></span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Curd Rice</span>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface-variant">Portion Limit: 40</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface font-semibold">22 / 40</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md">
+                18 Left
+              </span>
+</div>
+</div>
+<div class="w-full bg-border-sand h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 55%"></div>
+</div>
+</div>
+<!-- Item 6: Masala Chaas (48% - 52 Left) -->
+<div class="p-space-sm rounded-lg bg-surface-container-low border border-border-sand transition-all hover:bg-surface-container/60">
+<div class="flex items-start justify-between mb-1.5">
+<div class="flex items-center gap-space-xs">
+<!-- Veg Marker -->
+<span class="w-4 h-4 rounded-sm flex items-center justify-center bg-fssai-veg-bg border border-fssai-veg shadow-xs" title="Vegetarian">
+<span class="w-2 h-2 rounded-full bg-fssai-veg"></span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Masala Chaas</span>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface-variant">Portion Limit: 100</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface font-semibold">48 / 100</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md">
+                52 Left
+              </span>
+</div>
+</div>
+<div class="w-full bg-border-sand h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 48%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Orders by Pickup Slot (5 Cols) -->
+<div class="lg:col-span-5 bg-surface-card border border-border-sand p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-xs mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">bar_chart</span>
+<span class="font-headline-md text-headline-md text-on-surface">Pickup Slots</span>
+</div>
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant">15-min intervals</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">Real-time throughput distribution across lunch counter queues</p>
+<!-- Peak Alert Strip -->
+<div class="mb-space-md p-space-sm bg-[#FFECE5] border border-primary/20 rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">bolt</span>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface leading-none font-semibold">Peak Interval Detected</span>
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant">13:00 - 13:15 (24 orders)</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-primary text-on-primary font-label-md text-label-md font-semibold">Stn 1 &amp; 2 Boosted</span>
+</div>
+<!-- Slot Chart Bars -->
+<div class="flex flex-col gap-space-xs">
+<!-- 12:30–12:45: 14 -->
+<div class="flex items-center gap-space-sm group">
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant w-24">12:30–12:45</span>
+<div class="flex-1 bg-surface-container-low border border-border-sand h-6 rounded-md overflow-hidden flex items-center px-1.5">
+<div class="bg-primary/40 h-4 rounded group-hover:bg-primary transition-all" style="width: 58.3%"></div>
+</div>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface w-8 text-right font-medium">14</span>
+</div>
+<!-- 12:45–13:00: 19 -->
+<div class="flex items-center gap-space-sm group">
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant w-24">12:45–13:00</span>
+<div class="flex-1 bg-surface-container-low border border-border-sand h-6 rounded-md overflow-hidden flex items-center px-1.5">
+<div class="bg-primary/60 h-4 rounded group-hover:bg-primary transition-all" style="width: 79.1%"></div>
+</div>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface w-8 text-right font-medium">19</span>
+</div>
+<!-- 13:00–13:15: 24 (BUSIEST PEAK - Highlighted Burnt Orange #C2410C) -->
+<div class="flex items-center gap-space-sm p-1 rounded-lg bg-[#FFECE5] border border-primary/30">
+<span class="font-ticket-timestamp text-ticket-timestamp text-primary font-bold w-24">13:00–13:15</span>
+<div class="flex-1 bg-surface-container h-7 rounded-md overflow-hidden flex items-center px-1.5 relative">
+<div class="bg-primary h-5 rounded flex items-center justify-end pr-2" style="width: 100%">
+<span class="font-label-md text-label-md text-on-primary font-bold tracking-wide text-[11px]">BUSIEST PEAK</span>
+</div>
+</div>
+<span class="font-ticket-code-sm text-ticket-code-sm text-primary font-bold w-8 text-right">24</span>
+</div>
+<!-- 13:15–13:30: 21 -->
+<div class="flex items-center gap-space-sm group">
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant w-24">13:15–13:30</span>
+<div class="flex-1 bg-surface-container-low border border-border-sand h-6 rounded-md overflow-hidden flex items-center px-1.5">
+<div class="bg-primary/70 h-4 rounded group-hover:bg-primary transition-all" style="width: 87.5%"></div>
+</div>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface w-8 text-right font-medium">21</span>
+</div>
+<!-- 13:30–13:45: 16 -->
+<div class="flex items-center gap-space-sm group">
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant w-24">13:30–13:45</span>
+<div class="flex-1 bg-surface-container-low border border-border-sand h-6 rounded-md overflow-hidden flex items-center px-1.5">
+<div class="bg-primary/50 h-4 rounded group-hover:bg-primary transition-all" style="width: 66.6%"></div>
+</div>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface w-8 text-right font-medium">16</span>
+</div>
+<!-- 13:45–14:00: 12 -->
+<div class="flex items-center gap-space-sm group">
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant w-24">13:45–14:00</span>
+<div class="flex-1 bg-surface-container-low border border-border-sand h-6 rounded-md overflow-hidden flex items-center px-1.5">
+<div class="bg-primary/40 h-4 rounded group-hover:bg-primary transition-all" style="width: 50%"></div>
+</div>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface w-8 text-right font-medium">12</span>
+</div>
+<!-- 14:00–14:15: 8 -->
+<div class="flex items-center gap-space-sm group">
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant w-24">14:00–14:15</span>
+<div class="flex-1 bg-surface-container-low border border-border-sand h-6 rounded-md overflow-hidden flex items-center px-1.5">
+<div class="bg-primary/30 h-4 rounded group-hover:bg-primary transition-all" style="width: 33.3%"></div>
+</div>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface w-8 text-right font-medium">8</span>
+</div>
+<!-- 14:15–14:30: 6 -->
+<div class="flex items-center gap-space-sm group">
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant w-24">14:15–14:30</span>
+<div class="flex-1 bg-surface-container-low border border-border-sand h-6 rounded-md overflow-hidden flex items-center px-1.5">
+<div class="bg-primary/25 h-4 rounded group-hover:bg-primary transition-all" style="width: 25%"></div>
+</div>
+<span class="font-ticket-code-sm text-ticket-code-sm text-on-surface w-8 text-right font-medium">6</span>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between text-on-surface-variant border-t border-border-sand">
+<span class="font-body-sm text-body-sm">Capacity Limit: 30 / slot</span>
+<span class="font-label-md text-label-md text-secondary flex items-center gap-1 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>No bottleneck alerts
+        </span>
+</div>
+</div>
+</section>
+<!-- Bottom Section: Quick Live Orders Feed -->
+<section class="bg-surface-card border border-border-sand p-space-lg rounded-xl shadow-sm flex flex-col mb-space-lg">
+<!-- Header with Live Pulse and Instant Controls -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md pb-space-md border-b border-border-sand">
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-ping"></span>
+<span class="font-headline-md text-headline-md text-on-surface">Quick Live Orders Feed</span>
+</div>
+<span class="font-ticket-timestamp text-ticket-timestamp bg-surface-container-low border border-border-sand px-2 py-0.5 rounded text-on-surface-variant">
+          Auto-refresh (5s)
+        </span>
+</div>
+<!-- Instant Filter Controls -->
+<div class="flex items-center gap-space-xs overflow-x-auto pb-1 md:pb-0" id="orderFilterContainer">
+<button class="filter-btn active px-space-md py-1.5 rounded-full bg-primary hover:bg-[#9A3412] text-on-primary font-label-md text-label-md shadow-sm transition-all" data-status="all" type="button">
+          All (120)
+        </button>
+<button class="filter-btn px-space-md py-1.5 rounded-full bg-surface-container-low border border-border-sand text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" data-status="ready" type="button">
+          Ready (14)
+        </button>
+<button class="filter-btn px-space-md py-1.5 rounded-full bg-surface-container-low border border-border-sand text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" data-status="preparing" type="button">
+          Preparing (6)
+        </button>
+<button class="filter-btn px-space-md py-1.5 rounded-full bg-surface-container-low border border-border-sand text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" data-status="collected" type="button">
+          Collected (90)
+        </button>
+<button class="filter-btn px-space-md py-1.5 rounded-full bg-surface-container-low border border-border-sand text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" data-status="issues" type="button">
+          Issues (10)
+        </button>
+</div>
+</div>
+<!-- Tabular High-Density Feed -->
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md border-b border-border-sand">
+<th class="py-2.5 px-space-md rounded-l-lg">TICKET ID</th>
+<th class="py-2.5 px-space-md">EMPLOYEE</th>
+<th class="py-2.5 px-space-md">ITEMS ORDERED</th>
+<th class="py-2.5 px-space-md">PICKUP SLOT</th>
+<th class="py-2.5 px-space-md">STATUS</th>
+<th class="py-2.5 px-space-md text-right rounded-r-lg">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-sand">
+<!-- Order #501 (Priya Sharma - Ready) -->
+<tr class="order-row group hover:bg-surface-container-low/80 transition-colors" data-order-status="ready">
+<td class="py-3 px-space-md font-ticket-code-sm text-ticket-code-sm text-primary font-bold">
+              ORD #501
+            </td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface">Priya Sharma</span>
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant">Desk 4B · Tech Eng</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface">
+<span class="w-3.5 h-3.5 rounded-sm flex items-center justify-center bg-fssai-veg-bg border border-fssai-veg shadow-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-fssai-veg"></span>
+</span>
+<span>1× Veg Biryani, 1× Masala Chaas</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface bg-surface-container-low border border-border-sand px-2 py-0.5 rounded">
+                13:00 - 13:15
+              </span>
+</td>
+<td class="py-3 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md font-medium">
+<span class="material-symbols-outlined text-[14px]">done_all</span>
+                Ready
+              </span>
+</td>
+<td class="py-3 px-space-md text-right">
+<button class="px-space-sm py-1 rounded bg-secondary-container text-on-secondary-container font-label-md text-label-md hover:bg-secondary hover:text-on-secondary transition-all font-medium" type="button">
+                Mark Collected
+              </button>
+</td>
+</tr>
+<!-- Order #502 (Amit K. - Preparing) -->
+<tr class="order-row group hover:bg-surface-container-low/80 transition-colors" data-order-status="preparing">
+<td class="py-3 px-space-md font-ticket-code-sm text-ticket-code-sm text-on-surface font-bold">
+              ORD #502
+            </td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface">Amit K.</span>
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant">Desk 2F · Finance</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface">
+<span class="w-3.5 h-3.5 rounded-sm flex items-center justify-center bg-fssai-non-veg-bg border border-fssai-non-veg shadow-xs">
+<span class="w-0 h-0 border-l-[3px] border-l-transparent border-r-[3px] border-r-transparent border-b-[5px] border-b-fssai-non-veg"></span>
+</span>
+<span>1× Chicken Curry, 2× Tandoori Roti</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface bg-surface-container-low border border-border-sand px-2 py-0.5 rounded">
+                13:15 - 13:30
+              </span>
+</td>
+<td class="py-3 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-status-warning-bg text-status-warning-text font-label-md text-label-md font-medium">
+<span class="material-symbols-outlined text-[14px] animate-spin">refresh</span>
+                Preparing
+              </span>
+</td>
+<td class="py-3 px-space-md text-right">
+<button class="px-space-sm py-1 rounded bg-surface-container border border-border-sand text-on-surface font-label-md text-label-md hover:bg-primary hover:text-on-primary transition-all font-medium" type="button">
+                Call Station 2
+              </button>
+</td>
+</tr>
+<!-- Order #503 (Neha Verma - Ready) -->
+<tr class="order-row group hover:bg-surface-container-low/80 transition-colors" data-order-status="ready">
+<td class="py-3 px-space-md font-ticket-code-sm text-ticket-code-sm text-primary font-bold">
+              ORD #503
+            </td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface">Neha Verma</span>
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant">Desk 8A · Operations</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface">
+<span class="w-3.5 h-3.5 rounded-sm flex items-center justify-center bg-fssai-veg-bg border border-fssai-veg shadow-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-fssai-veg"></span>
+</span>
+<span>1× Paneer Butter Masala, 1× Curd Rice</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface bg-surface-container-low border border-border-sand px-2 py-0.5 rounded">
+                13:00 - 13:15
+              </span>
+</td>
+<td class="py-3 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md font-medium">
+<span class="material-symbols-outlined text-[14px]">done_all</span>
+                Ready
+              </span>
+</td>
+<td class="py-3 px-space-md text-right">
+<button class="px-space-sm py-1 rounded bg-secondary-container text-on-secondary-container font-label-md text-label-md hover:bg-secondary hover:text-on-secondary transition-all font-medium" type="button">
+                Mark Collected
+              </button>
+</td>
+</tr>
+<!-- Order #504 (Vikram Sen - Preparing) -->
+<tr class="order-row group hover:bg-surface-container-low/80 transition-colors" data-order-status="preparing">
+<td class="py-3 px-space-md font-ticket-code-sm text-ticket-code-sm text-on-surface font-bold">
+              ORD #504
+            </td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface">Vikram Sen</span>
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface-variant">Desk 1C · Executive</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface">
+<span class="w-3.5 h-3.5 rounded-sm flex items-center justify-center bg-fssai-veg-bg border border-fssai-veg shadow-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-fssai-veg"></span>
+</span>
+<span>1× Dal Tadka + Rice, 1× Masala Chaas</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<span class="font-ticket-timestamp text-ticket-timestamp text-on-surface bg-surface-container-low border border-border-sand px-2 py-0.5 rounded">
+                13:15 - 13:30
+              </span>
+</td>
+<td class="py-3 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-status-warning-bg text-status-warning-text font-label-md text-label-md font-medium">
+<span class="material-symbols-outlined text-[14px] animate-spin">refresh</span>
+                Preparing
+              </span>
+</td>
+<td class="py-3 px-space-md text-right">
+<button class="px-space-sm py-1 rounded bg-surface-container border border-border-sand text-on-surface font-label-md text-label-md hover:bg-primary hover:text-on-primary transition-all font-medium" type="button">
+                Call Station 1
+              </button>
+</td>
+</tr>
+<!-- Order #505 (Sanjay Rao - No-Show/Issue) -->
+<tr class="order-row group hover:bg-surface-container-low/80 transition-colors" data-order-status="issues">
+<td class="py-3 px-space-md font-ticket-code-sm text-ticket-code-sm text-error font-bold">
+              ORD #498
+            </td>
+<td class="py-3 px-space-md">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface">Sanjay Rao</span>
+<span class="font-ticket-timestamp text-ticket-timestamp text-error">Slot expired (+20m)</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface">
+<span class="w-3.5 h-3.5 rounded-sm flex items-center justify-center bg-fssai-veg-bg border border-fssai-veg shadow-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-fssai-veg"></span>
+</span>
+<span>1× Veg Biryani</span>
+</div>
+</td>
+<td class="py-3 px-space-md">
+<span class="font-ticket-timestamp text-ticket-timestamp text-error bg-error-container/60 border border-error/20 px-2 py-0.5 rounded">
+                12:30 - 12:45
+              </span>
+</td>
+<td class="py-3 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-error-container text-error font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                No-Show
+              </span>
+</td>
+<td class="py-3 px-space-md text-right">
+<button class="px-space-sm py-1 rounded bg-error-container text-error font-label-md text-label-md hover:bg-error hover:text-on-error transition-all font-semibold" type="button">
+                Notify / Void
+              </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Feed Footer Summary -->
+<div class="mt-space-md pt-space-sm flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm text-on-surface-variant border-t border-border-sand">
+<span class="font-ticket-timestamp text-ticket-timestamp">
+        Showing 5 of 120 items · Counter Scanner Sync: 4 Active Terminals
+      </span>
+<div class="flex items-center gap-space-md">
+<button class="font-label-md text-label-md text-primary hover:text-[#9A3412] hover:underline flex items-center gap-1 font-semibold" type="button">
+          Open Kitchen Display System (KDS)
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Interactive Filter Logic (Vanilla JS) -->
+<script>
+    (function initDashboardInteractions() {
+      const filterButtons = document.querySelectorAll('#orderFilterContainer .filter-btn');
+      const orderRows = document.querySelectorAll('.order-row');
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Toggle button styles
+          filterButtons.forEach(b => {
+            b.classList.remove('bg-primary', 'hover:bg-[#9A3412]', 'text-on-primary', 'shadow-sm');
+            b.classList.add('bg-surface-container-low', 'border', 'border-border-sand', 'text-on-surface-variant');
+          });
+          btn.classList.remove('bg-surface-container-low', 'border', 'border-border-sand', 'text-on-surface-variant');
+          btn.classList.add('bg-primary', 'hover:bg-[#9A3412]', 'text-on-primary', 'shadow-sm');
+
+          const status = btn.getAttribute('data-status');
+
+          // Filter order rows
+          orderRows.forEach(row => {
+            const rowStatus = row.getAttribute('data-order-status');
+            if (status === 'all' || rowStatus === status) {
+              row.style.display = '';
+            } else {
+              row.style.display = 'none';
+            }
+          });
+        });
+      });
+    })();
+  </script>
+</div></main></div></body></html>

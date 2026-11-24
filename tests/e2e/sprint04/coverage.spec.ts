@@ -1,5 +1,5 @@
 /**
- * Sprint 05 AC 05-0 — pre-migration safety net.
+ * Pre-migration safety net for the move to Next.js.
  *
  * These cover the seven flows found untested on 2026-11-23. They are written against the current
  * Express + Vite app and must keep passing unchanged after the Next.js migration, so they are the

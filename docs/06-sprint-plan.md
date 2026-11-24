@@ -48,7 +48,7 @@ flowchart LR
 | 1.3 | Database: Prisma schema, constraint migration, seed (4 users, 6 dishes) | ST-00 | — | Prisma + raw SQL | DB constraint checks |
 | 1.4 | Web skeleton with the Fresh Counter theme (tokens, fonts, icons, router) | ST-00 | Vite + Tailwind theme | — | Smoke E2E |
 | 1.5 | CI pipeline (lint, typecheck, unit, API, E2E) | ST-00 | ✓ | ✓ | CI green |
-| 1.6 | **Deployment:** API on Render, web on Netlify with the `/api` proxy | ST-00 | `netlify.toml` | Render service | Cookie check via proxy |
+| 1.6 | **Deployment:** first live deploy | ST-00 | ✓ | ✓ | Cookie check on the live site |
 | 1.7 | IST clock + test clock + prod guard | ST-00 | — | `clock.ts`, `testClock` | TC-U-04, TC-API-SYS-02 |
 | 1.8 | UI kit (buttons, inputs, diet marker, badges, cards, tickets, dialogs, toasts…) + `/dev/ui` gallery | ST-01 | `components/ui` | — | Visual check |
 | 1.9 | Sign up with company email | ST-01 | S2 (mobile + desktop) | A1 | TC-API-AUTH-01..03, 08, TC-UI-01 |
@@ -59,7 +59,7 @@ flowchart LR
 **Claude Code prompts:** C01 → C07, C08 (clock part), C09, C10, C19, C20, C21, C22, C12 (daily-menu part), C34, C44 (first deploy)
 
 ### Exit criteria (Sprint review demo)
-- [ ] Open the **Netlify URL** → sign up as a new employee → land on the (empty) menu
+- [ ] Open the **live URL** → sign up as a new employee → land on the (empty) menu
 - [ ] Log in as staff, manager and admin → each lands on its own home; an employee opening `/manager/dashboard` sees 403
 - [ ] As manager, publish tomorrow's menu; a quantity below "already ordered" shows the error
 - [ ] CI green; API test count reported; prompt journal has entries for C01–C22
@@ -196,7 +196,7 @@ flowchart LR
 | Database + constraints + seed | Countdown + closed states | Scan & hand over (S8) | Canteen rules + holidays (S15) |
 | Fresh Counter theme + UI kit | Cart (tray + desktop panel) | Prep list (S9) | My orders (S6) |
 | CI pipeline | Pickup slots + capacity | Manager dashboard (S10) | CSV exports (S16) |
-| Deploy: Netlify + Render + proxy | **Place order (atomic stock)** | Demo seed | Error pages (S17) |
+| First deploy | **Place order (atomic stock)** | Demo seed | Error pages (S17) |
 | IST clock + test clock | Pickup pass + QR (S5) | **Golden path E2E** | *Stretch:* email, auto no-show, live feed |
 | Sign up (S2) | Cancel + re-order | | Hardening, RBAC matrix, a11y |
 | Login / logout / lockout (S1) | | | E2E + visual check, k6 load test |

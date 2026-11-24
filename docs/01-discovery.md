@@ -133,7 +133,7 @@ Each assumption is stated openly and has a way to validate it. Any assumption th
 | A10 | Peak load is about **300 concurrent users** in the 10 minutes before cut-off (office of about 800 people). | Technical | Medium | Load test in Stage 7 (`07-non-functional-test.md`) |
 | A11 | All business times use **Asia/Kolkata (IST)**. Timestamps are stored in UTC. | Technical | High: date bugs near midnight and cut-off | Unit tests around cut-off boundaries |
 | A12 | Prices are in **INR** and stored as integer **paise** so floating-point rounding errors cannot occur. | Technical | Medium | Code review + unit tests |
-| A13 | **Free-tier hosting** (Netlify for the web app, Render for the API, Neon Postgres) is enough for a demo and a pilot. | Cost | Medium: free-tier limits |  monitor usage dashboards |
+| A13 | **Free-tier hosting** (Vercel for the app, a free hosted Postgres) is enough for a demo and a pilot. | Cost | Medium: free-tier limits |  monitor usage dashboards |
 | A14 | If an order is not collected by **slot end + 30 min**, it is marked **NO_SHOW** and still billed (the policy is set by the Admin). | Business | Medium: policy may differ | Confirm with admin; feature is a **Should** |
 | A15 | Users are on modern mobile or desktop browsers (latest 2 versions of Chrome, Safari, Edge and Firefox). | Technical | Low | Responsive UI tests on 3 viewports |
 

@@ -15,32 +15,26 @@ flowchart TB
         A[Admin<br/>laptop]
     end
 
-    subgraph Netlify["Netlify (free) · frontend"]
+    subgraph Vercel["Vercel · one Next.js app"]
         direction TB
-        UI[React SPA · Vite build<br/>React Router · TanStack Query<br/>Tailwind · Fresh Counter design]
-        PX[Rewrite rule<br/>/api/* → Render API]
-    end
-
-    subgraph Render["Render (free web service) · backend"]
-        direction TB
-        API[Express app<br/>helmet · rate limit · cookie-parser<br/>authenticate · requireRole · validate]
+        UI[Pages · React 19<br/>TanStack Query · Tailwind<br/>Fresh Counter design]
+        API[Route Handlers /api/*<br/>route wrapper: rate limit · session<br/>role check · Zod validation]
         SVC[Service layer<br/>orders · menu · auth · reports]
     end
 
     GHA[GitHub Actions schedule<br/>calls /api/cron/no-show]
-    DB[(PostgreSQL<br/>Neon free tier<br/>pooled connection)]
+    DB[(PostgreSQL<br/>Supabase<br/>pooled connection)]
     MAIL[Resend<br/>email API]
 
     E & S & M & A -->|HTTPS · one domain| UI
-    UI -->|fetch /api/*, same origin| PX
-    PX -->|HTTPS proxy| API
+    UI -->|fetch /api/*, same origin| API
     GHA -->|Bearer CRON_SECRET| API
     API --> SVC
     SVC -->|Prisma ORM| DB
     SVC -.->|async, best-effort| MAIL
 ```
 
-**Why the proxy matters:** the browser only ever talks to the Netlify domain. Netlify forwards `/api/*` to the Render API, so the session cookie is a normal first-party cookie (`SameSite=Lax`) and no cross-site cookie or CORS setup is needed. Locally, Vite's `server.proxy` does the same job.
+**One origin:** pages and `/api/*` are served by the same Next.js app on Vercel, so the session cookie is a normal first-party cookie (`SameSite=Lax`) and no cross-site cookie, proxy or CORS setup is needed. Locally, `npm run dev` serves both on `http://localhost:3000`.
 
 ## 2. Layers inside the Express API
 
@@ -127,7 +121,7 @@ Allowed transitions are defined once in `backend/src/services/orderStatus.ts` (a
 sequenceDiagram
     autonumber
     actor E as Employee
-    participant UI as React app (Netlify)
+    participant UI as React page (Vercel)
     participant API as POST /api/orders (Express)
     participant SVC as orderService.place()
     participant DB as Postgres
@@ -160,77 +154,38 @@ sequenceDiagram
 flowchart LR
     Dev[Developer laptop] -->|git push| GH[GitHub repo]
     GH -->|Actions: lint · typecheck · unit · API · UI tests| CI{CI green?}
-    CI -- yes --> NW[Netlify builds frontend<br/>deploy preview per PR · production on main]
-    CI -- yes --> RA[Render builds backend<br/>auto-deploy on main]
-    RA -->|prisma migrate deploy on start| N[(Neon Postgres)]
-    SCH[GitHub Actions schedule] -->|POST /api/cron/no-show| RA
+    GH -->|push to main| V[Vercel builds the Next.js app<br/>preview per branch · production on main]
+    V -->|Prisma| N[(Supabase Postgres)]
+    SCH[GitHub Actions schedule] -->|POST /api/cron/no-show| V
 ```
 
-| Environment | Web URL | API | DB |
-|---|---|---|---|
-| Local | `http://localhost:5173` (Vite, proxies `/api` → 4000) | `http://localhost:4000` | Docker Postgres or a Neon dev branch |
-| CI | ephemeral | in-process (Supertest) and `node dist/server.js` for Playwright | Postgres service container in GitHub Actions |
-| Staging (load test) | Netlify deploy preview | separate Render service with `ENABLE_TEST_CLOCK=true` | Neon **dev branch** |
-| Production | `https://<project>.netlify.app` | `https://<api>.onrender.com` (reached via the `/api` proxy) | Neon main branch |
+| Environment | URL | DB |
+|---|---|---|
+| Local | `http://localhost:3000` (`npm run dev`: pages and `/api`) | local Postgres `canteenq_dev` |
+| Tests | in-process route handlers (Supertest); `next start` on :3100 for Playwright | `canteenq_test`, `canteenq_e2e` |
+| Production | <https://rubicocanteen-q.vercel.app/> | Supabase (pooler for the app, direct connection for migrations) |
 
-**Netlify config** (`frontend/netlify.toml`):
-```toml
-[build]
-  base = "frontend"
-  command = "npm run build"
-  publish = "dist"
+Migrations and the production seed run against the production database with `npm run db:deploy && npm run db:seed:prod`.
 
-[[redirects]]
-  from = "/api/*"
-  to = "https://<api>.onrender.com/api/:splat"
-  status = 200
-  force = true
-
-[[redirects]]          # SPA fallback for React Router
-  from = "/*"
-  to = "/index.html"
-  status = 200
-```
-
-**Settings and secrets:** the API holds `DATABASE_URL`, `DIRECT_URL`, `SESSION_SECRET`, `RESEND_API_KEY`, `CRON_SECRET`, `WEB_ORIGIN` (in Render's environment settings). The web app only needs `VITE_API_BASE=/api` (no secrets in the frontend). GitHub holds `CRON_SECRET` and `API_URL` for the scheduled job. `.env` files are git-ignored; `.env.example` files are committed.
+**Settings and secrets:** set in Vercel's environment variables: `DATABASE_URL`, `DIRECT_URL`, `SESSION_SECRET`, `CRON_SECRET`, `WEB_ORIGIN`, `APP_ENV`, `ALLOWED_EMAIL_DOMAINS`, `ADMIN_*`, `MAIL_*`. Nothing secret reaches the browser. GitHub holds `CRON_SECRET` and `API_URL` for the scheduled job. `.env` is git-ignored; `.env.example` is committed.
 
 **Slow requests:** serverless cold starts can make the first request after a quiet period slower. When any request takes more than 1 second, the UI shows a loader (a thin progress bar across the top and a small spinner).
 
 ## 7. Repository structure
 
 ```
-canteenQ/                             # npm workspaces monorepo: shared · backend · frontend
-├── backend/                          # BACKEND: Express + Prisma (Render)
-│   ├── src/
-│   │   ├── app.ts                    # builds the Express app (imported by Supertest)
-│   │   ├── server.ts                 # app.listen()
-│   │   ├── routes/                   # auth, settings, menu, daily menu, slots, orders, staff, reports, cron
-│   │   ├── middleware/               # authenticate, requireRole, validate, testClock, asyncHandler
-│   │   ├── services/                 # orderService, dailyMenuService, rules, pickupCode, orderStatus, …
-│   │   ├── adapters/                 # clock, qr, csv, email
-│   │   └── db.ts
-│   ├── prisma/                       # schema.prisma, migrations/, seed.ts
-│   └── tests/
-│       ├── unit/                     # Vitest (sprintNN.* = scripts gated per sprint)
-│       ├── api/                      # Supertest + Vitest (sprintNN/ = gated per sprint)
-│       ├── e2e/seed-e2e.ts           # E2E database reset + fixtures
-│       └── perf/                     # k6 load test + oversell SQL checks
-├── frontend/                         # FRONTEND: React + Vite + Tailwind (Netlify)
-│   ├── src/
-│   │   ├── routes/                   # page components per screen (S1–S17)
-│   │   ├── layouts/                  # EmployeeShell, StaffShell, ConsoleShell, RequireRole
-│   │   ├── components/ui/            # Fresh Counter components (Button, DietMarker, Ticket…)
-│   │   ├── features/                 # cart/, ordering/, …
-│   │   ├── api/                      # fetch client + TanStack Query hooks
-│   │   └── styles/                   # Tailwind theme tokens from DESIGN.md
-│   ├── tests/e2e/                    # Playwright UI (desktop + mobile; sprintNN/ = gated per sprint)
-│   ├── playwright.config.ts          # starts the API (:4010) and vite preview (:4173)
-│   ├── netlify.toml
-│   └── vite.config.ts                # dev proxy /api → :4000
-├── shared/                           # Zod schemas, types, constants, money helpers (used by backend + frontend)
-├── scripts/                          # test-cases-index.py, trace-matrix.py
+canteenq-next/                        # one Next.js 16 app (App Router)
+├── src/
+│   ├── app/                          # routes: (public), (employee), staff/, (console)/, api/ (one route.ts per endpoint)
+│   ├── screens/                      # page components (client)
+│   ├── layouts/ components/ features/ lib/ api/   # shells, Fresh Counter UI kit, cart, fetch client + hooks
+│   ├── server/                       # server-only: services, auth, adapters, Prisma client
+│   │   └── http/route.ts             # route() wrapper: rate limits, JSON body, session, roles, Zod validation, error JSON
+│   └── shared/                       # Zod schemas, types, constants, money helpers (client + server)
+├── prisma/                           # schema.prisma, migrations/, seeds
+├── tests/                            # unit/ shared/ api/ (Vitest + Supertest), e2e/ smoke/ (Playwright), perf/ (k6)
 ├── docs/                             # ← this folder (incl. docs/design/, docs/sprints/, docs/test-cases/)
-└── .github/workflows/ci.yml
+└── .github/workflows/                # ci.yml, no-show.yml
 ```
 
 ## 8. Security design summary
@@ -239,8 +194,8 @@ canteenQ/                             # npm workspaces monorepo: shared · backe
 |---|---|
 | Password theft | bcrypt cost 12; passwords never logged or returned |
 | Brute-force login | 5 attempts / 15 min per email (BR11) |
-| Session theft / CSRF | httpOnly, Secure, SameSite=Lax cookie (first-party thanks to the `/api` proxy); 8 h expiry; state-changing requests use POST, PATCH, PUT or DELETE with JSON bodies only; CORS allows only `WEB_ORIGIN` |
-| Common web attacks | `helmet` security headers on the API; Netlify `_headers` file sets CSP, `X-Frame-Options` and `Permissions-Policy` (camera only on `/staff/scan`) for the web app |
+| Session theft / CSRF | httpOnly, Secure, SameSite=Lax cookie (first-party: pages and API share one origin); 8 h expiry; state-changing requests use POST, PATCH, PUT or DELETE with JSON bodies only; CORS allows only `WEB_ORIGIN` |
+| Common web attacks | Security headers on every response from `next.config.ts`: `X-Frame-Options`, `X-Content-Type-Options`, HSTS, `Referrer-Policy` and `Permissions-Policy` (camera on the same origin only, for `/staff/scan`) |
 | Abuse / flooding | `express-rate-limit` on login and sign-up; general limit per IP on `/api` |
 | Privilege escalation | Role re-read from the DB on every request; server-side guard on every handler; RBAC API tests |
 | IDOR (reading other users' orders) | Queries are scoped by `userId` for EMPLOYEE; return 404 instead of 403 |

@@ -48,7 +48,7 @@
 - **Prompt (key part):** "Give me a comparison of which tech stack we're using and why not others", then "If I want to go with Option B".
 - **What the AI produced:** a layer-by-layer comparison, and the changes needed for Option B (cookie proxy, cold start, cron, Supertest).
 - **What I kept / changed:** _<fill in>_. The v1 ADR had assumed equal skill for Next.js and Express; I corrected the scores to my real experience, which changed the decision (ADR-001 v2).
-- **Verification:** _<e.g. tested login through the Netlify proxy on a deploy preview>_
+- **Verification:** _<e.g. tested login on a Vercel preview deployment>_
 
 ### J-04 · Stage 6 · _<e.g. Prisma schema>_
 - **Date / tool:**

@@ -18,7 +18,7 @@ package move over unchanged.
 | `authenticate`, `requireRole`, `validate`, `asyncHandler`, `errorHandler`, `testClock`, `express.json` | `route()` in `src/server/http/route.ts`. It checks in the same order: rate limit → JSON body → session → role → params → query → body |
 | `express-rate-limit` | `src/server/http/rateLimit.ts` (in memory, same limits) |
 | `helmet` | security headers in `next.config.ts` |
-| `cors`, Vite/Netlify `/api` proxy, `WEB_DIST_DIR` static serving | not needed: pages and API are the same origin |
+| `cors`, the Vite and hosting `/api` proxy, `WEB_DIST_DIR` static serving | not needed: pages and API are the same origin |
 | `res.cookie` / `cookie-parser` | `src/server/http/cookies.ts` (same `cq_session` cookie flags) |
 | `pino-http` | one `request` log line per API call from `route()` |
 | `backend/.env` + root `.env` | one root `.env` |

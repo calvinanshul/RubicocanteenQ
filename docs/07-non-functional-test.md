@@ -5,7 +5,7 @@
 | **Test IDs** | TC-NFR-01 (performance), TC-NFR-02 (data integrity) |
 | **Requirements** | NFR1: `POST /api/orders` p95 < 800 ms and error rate < 1% at 100 concurrent users · NFR2: zero overselling |
 | **Tool** | [k6](https://k6.io) (open-source, scriptable, pass/fail thresholds) |
-| **Target** | **Staging**: Netlify deploy preview (with the `/api` proxy) + a separate staging Render API service + Neon dev branch (never production) |
+| **Target** | **Staging**: a Vercel preview deployment with `ENABLE_TEST_CLOCK=true` and its own database (never production) |
 
 ## 1. Why this scenario
 
@@ -39,7 +39,7 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 
-const BASE = __ENV.BASE_URL;                       // e.g. https://deploy-preview-12--canteenq.netlify.app (requests go through the /api proxy, as real users' do)
+const BASE = __ENV.BASE_URL;                       // e.g. a Vercel preview URL (pages and /api on one origin, as real users see it)
 const DATE = __ENV.TEST_DATE;                      // e.g. 2026-11-17
 const NOW  = `${DATE}T10:50:00+05:30`;
 const H    = { 'Content-Type': 'application/json', 'x-test-now': NOW };
@@ -118,7 +118,7 @@ export default function () {
 
 **Run**
 ```bash
-k6 run -e BASE_URL=https://<deploy-preview>--<site>.netlify.app -e TEST_DATE=2026-11-17 \
+k6 run -e BASE_URL=https://<preview>.vercel.app -e TEST_DATE=2026-11-17 \
        -e LOADTEST_PASSWORD=*** --summary-export=docs/perf/summary.json backend/tests/perf/order-rush.js
 ```
 
@@ -144,7 +144,7 @@ GROUP BY "userId" HAVING COUNT(*) > 1;                                -- expect 
 
 ## 5. Results *(fill in after running; paste the k6 summary into `docs/perf/`)*
 
-**Run date / environment:** _<date, Netlify preview URL, Render service region, Neon region>_
+**Run date / environment:** _<date, Vercel preview URL, function region, database region>_
 
 | Metric | Threshold | Result | Pass? |
 |---|---|---|---|
@@ -170,5 +170,5 @@ GROUP BY "userId" HAVING COUNT(*) > 1;                                -- expect 
 - Free-tier serverless and database performance varies between runs, so run the test **3 times** and report the median.
 - 100 VUs is a pilot-scale test, not a capacity test of the whole office. The 300-user stretch target (A10) is a separate run if time allows.
 - The test runs from a single location (your laptop or k6 Cloud's free tier). Network latency is included in the results.
-- The free Render API runs on a small shared instance, and the Netlify proxy adds a network hop. Results show the **free-tier pilot** set-up, not production capacity; record both facts next to the numbers.
+- The free Vercel plan runs the API as serverless functions on shared instances, and the database is a separate network hop. Results show the **free-tier pilot** set-up, not production capacity; record both facts next to the numbers.
 - The warm-up in `setup()` keeps cold starts out of the measurements. Report the cold-start time separately if you measure it.

@@ -3,7 +3,7 @@
 > **Topic #3:** *Let employees order lunch before they reach the canteen.*
 > QA Coding Challenge — Round 2: Topic to Product
 
-**Live app:** _<https://your-site.netlify.app>_ (API on Render, reached via `/api`) · **Repo:** _<link>_ · **Author:** _<name>_
+**Live app:** <https://rubicocanteen-q.vercel.app/> (pages and `/api` on one Next.js app, hosted on Vercel) · **Repo:** _<link>_ · **Author:** _<name>_
 
 ## Stage map
 
@@ -12,9 +12,9 @@
 | 1 | Discovery | [01-discovery.md](01-discovery.md): problem statement, 4 personas, 15 assumptions, interview guide | ☐ |
 | 2 | Requirements | [02-requirements.md](02-requirements.md): MoSCoW (17 Must / 7 Should / 7 Could / 8 Won't), business rules, NFRs, MVP definition, change log and **design decisions D1–D21** | ☐ |
 | 3 | User stories | [03-user-stories.md](03-user-stories.md): 20 stories, Given/When/Then, negative and edge cases | ☐ |
-| 4 | Tech stack decision | [04-adr-001-tech-stack.md](04-adr-001-tech-stack.md): 3 options, weighted comparison, rejected options explained; **v2 decision: React + Express** | ☐ |
+| 4 | Tech stack decision | [04-adr-001-tech-stack.md](04-adr-001-tech-stack.md): 3 options, weighted comparison, rejected options explained; **v2 decision: React + Express** · [09-adr-002-nextjs-migration.md](09-adr-002-nextjs-migration.md): move to Next.js | ☐ |
 | 5 | Architecture and design | [05-architecture.md](05-architecture.md) · [05-data-model.md](05-data-model.md) (ER) · [05-api-spec.md](05-api-spec.md) · [05-wireframes.md](05-wireframes.md) (5 screens) · [05-ui-design-requirements.md](05-ui-design-requirements.md) (design brief) · [design/](design/) (Stitch "Fresh Counter" design: 4 screens + design system) | ☐ |
-| 6 | Build with AI | [06-build-plan.md](06-build-plan.md) (plan, commits, CI) · [06-build-tasks.md](06-build-tasks.md) (FE/BE task list) · [06-ai-prompt-journal.md](06-ai-prompt-journal.md) | ☐ |
+| 6 | Build with AI | [06-build-plan.md](06-build-plan.md) (plan, commits, CI) · [06-build-tasks.md](06-build-tasks.md) (FE/BE task list) · [06-ai-prompt-journal.md](06-ai-prompt-journal.md) · [sprints/](sprints/STATUS.md) (Sprints 01–04) | ☐ |
 | 7 | Testing | [07-test-strategy.md](07-test-strategy.md) · [07-test-cases.md](07-test-cases.md) (111 cases) · [07-traceability-matrix.md](07-traceability-matrix.md) · [07-bug-log.md](07-bug-log.md) · [07-non-functional-test.md](07-non-functional-test.md) | ☐ |
 | 8 | Demo and retrospective | [08-demo-script.md](08-demo-script.md) · [08-retrospective.md](08-retrospective.md) | ☐ |
 
@@ -32,9 +32,11 @@
 > The brief says "8 minimums" but lists 6. All 6 are covered (see `01-discovery.md §3.1`).
 
 ## Stack at a glance
-**Frontend:** React + Vite (TypeScript) · React Router · TanStack Query · Tailwind (Fresh Counter design) · hosted on Netlify
+**App:** Next.js 16 (App Router, TypeScript) · React 19 · TanStack Query · Tailwind (Fresh Counter design) · Route Handlers for the API · hosted on Vercel
 
-**Backend:** Node + Express (TypeScript) · Prisma · PostgreSQL (Neon) · Zod (shared) · bcrypt + JWT cookie · `qrcode` · hosted on Render
+**Data and auth:** Prisma · PostgreSQL (Supabase) · Zod (shared) · bcrypt + JWT cookie · `qrcode`
+
+> Built as React + Vite and Express (ADR-001 v2) in Sprints 01–04, then moved to one Next.js app ([ADR-002](09-adr-002-nextjs-migration.md)).
 
 **Testing:** Vitest · Supertest · Playwright · k6 · GitHub Actions. *Rationale in ADR-001 v2.*
 

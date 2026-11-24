@@ -1,7 +1,9 @@
 # CanteenQ
 
 Office canteen pre-order: employees order lunch before the cut-off, pick a pickup slot and collect with a QR code.
-Project documentation lives in [`docs/`](docs/README.md); sprint plans and status in [`docs/sprints/`](docs/sprints/STATUS.md).
+Project documentation lives in [`docs/`](docs/README.md); the four delivery sprints (01–04) and their status are in
+[`docs/sprints/`](docs/sprints/STATUS.md). The move to Next.js and Vercel was done after Sprint 04 and is recorded in
+[ADR-002](docs/09-adr-002-nextjs-migration.md).
 
 ## Live site
 **https://rubicocanteen-q.vercel.app/** (hosted on Vercel)

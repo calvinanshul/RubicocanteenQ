@@ -20,7 +20,7 @@
 | 00-8 | IST clock: `now(req)`, `todayIST()`, `x-test-now` honoured only when `ENABLE_TEST_CLOCK=true` | TC-U-04, TC-API-SYS-02 |
 | 00-9 | Web: Vite + React + TS + Tailwind with the Fresh Counter tokens (§2 of the UI spec), Plus Jakarta Sans + JetBrains Mono, Material Symbols, React Router, TanStack Query; `/api` dev proxy | Smoke E2E |
 | 00-10 | CI workflow `.github/workflows/ci.yml` (lint, typecheck, unit, API, build, E2E) | File present and runs locally |
-| 00-11 | Deploy config: `frontend/netlify.toml` (`/api/*` proxy + SPA fallback) and Render build/start commands documented | Config review |
+| 00-11 | Deploy config (`/api/*` proxy + SPA fallback) and build/start commands documented | Config review |
 
 ## ST-01 · Access (sign up, log in, roles)
 
@@ -62,7 +62,7 @@
 - [ ] lint, typecheck, unit, API and build all green
 
 ## Out of scope for this sprint
-- **Live deployment to Netlify/Render and the live cookie check (SET-12..14):** these need your accounts. The config files are in scope; deploying is a manual step for you.
+- **Live deployment and the live cookie check (SET-12..14):** these need your accounts. The config files are in scope; deploying is a manual step for you.
 - Menu catalogue CRUD screens (S11/S12, Sprint 4); employee menu screen S3 (Sprint 2); users and settings screens (Sprint 4).
 - Full RBAC matrix TC-API-RBAC-01 (Sprint 4 hardening).
 

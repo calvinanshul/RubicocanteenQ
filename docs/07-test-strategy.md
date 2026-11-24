@@ -49,7 +49,7 @@ flowchart TB
 | **Unit** | Vitest (+ coverage via v8) | Pure business logic: cut-off, slots, state machine, money, schemas, CSV escaping, password hashing, lockout (API); formatting helpers and cart logic (web) | `backend/tests/unit`, `frontend/src/**/*.test.ts` | Every push; aim for **≥ 80% line coverage on `lib/services` and `lib/validation`** |
 | **API** | **Supertest + Vitest** | Every endpoint: success, validation, error codes, RBAC, concurrency. Supertest imports the Express `app` directly, so no server or port is needed | `backend/tests/api` | Every push (in-process, against the CI Postgres) |
 | **UI E2E** | Playwright (projects: `chromium-desktop`, `mobile-pixel5`) | Critical user journeys, responsive checks, and a visual comparison with the Stitch screens | `frontend/tests/e2e` | Every push (Playwright `webServer` starts the API and `vite preview` with the `/api` proxy) |
-| **Non-functional** | k6 | Load at the cut-off rush; overselling invariant | `backend/tests/perf` | Run manually against the staging deployment (Netlify deploy preview + staging Render API); results in `07-non-functional-test.md` |
+| **Non-functional** | k6 | Load at the cut-off rush; overselling invariant | `backend/tests/perf` | Run manually against the staging deployment (a Vercel preview deployment with the test clock on); results in `07-non-functional-test.md` |
 | **Manual** | Real phone + tablet | Camera QR scan, email, exploratory testing | — | Before the demo |
 
 ### Example tests
@@ -107,7 +107,7 @@ it('only one of 10 parallel orders gets the last portion', async () => {
 | Per-test data | API helpers create their own users and menu entries with unique suffixes, so tests are independent and can run in parallel |
 | Clock | Fake clock in unit tests; `x-test-now` header in API and UI tests (`ENABLE_TEST_CLOCK=true` only in test environments) |
 | Reset | `npm run db:reset` before each CI run; Vitest `globalSetup` (API tests) and Playwright `globalSetup` (UI tests) truncate the order tables |
-| Environments | Local (Docker Postgres) → CI (Postgres service) → Staging: Netlify deploy preview + staging Render API + Neon dev branch (k6 target) → Production (smoke test only, after a `/api/health` warm-up) |
+| Environments | Local (Docker Postgres) → CI (Postgres service) → Staging: Vercel preview deployment + its own database (k6 target) → Production (smoke test only, after a `/api/health` warm-up) |
 | Browsers | Chromium (desktop), Pixel 5 emulation; WebKit (iPhone 13) as a nice-to-have |
 
 ## 6. Entry and exit criteria

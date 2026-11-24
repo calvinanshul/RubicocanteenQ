@@ -115,7 +115,7 @@
 | Date | Change | Reason |
 |---|---|---|
 | | v1.0 baseline | |
-| 18 Nov 2026 | **Tech stack changed to Option B** (React + Vite frontend, Express API, Prisma + Neon; Netlify + Render) | ADR-001 v2: re-scored with honest skill levels and in-process API testing |
+| 18 Nov 2026 | **Tech stack changed to Option B** (React + Vite frontend, Express API, Prisma + Neon) | ADR-001 v2: re-scored with honest skill levels and in-process API testing |
 | 18 Nov 2026 | **Stitch "Fresh Counter" design adopted** (`docs/design/`) | Final UI design for the project |
 | 18 Nov 2026 | S03 Slot capacity promoted to **Must (M17)** | The checkout design shows full slots (D8) |
 | 18 Nov 2026 | Added Could **C07** Wallet pass | Shown in the design but out of scope (D11) |

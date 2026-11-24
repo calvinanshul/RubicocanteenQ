@@ -1,6 +1,6 @@
 # Stage 5c — API List
 
-Base URL: `/api` (the browser calls the Netlify domain; Netlify proxies `/api/*` to the Express API on Render) · Format: JSON (UTF-8) · Auth: session cookie `cq_session` (httpOnly JWT) · Times: `HH:mm` IST · Dates: `YYYY-MM-DD` (IST) · Money: integer **paise** in requests and responses (`totalPaise: 24000` = ₹240.00)
+Base URL: `/api` (served by the same Next.js app on Vercel as the pages, so the browser only talks to one domain) · Format: JSON (UTF-8) · Auth: session cookie `cq_session` (httpOnly JWT) · Times: `HH:mm` IST · Dates: `YYYY-MM-DD` (IST) · Money: integer **paise** in requests and responses (`totalPaise: 24000` = ₹240.00)
 
 ## Standard error format
 

@@ -6,7 +6,7 @@
 
 | Day | Focus | Output / exit criteria | Stories |
 |---|---|---|---|
-| **Day 1** | Stages 1–5 docs; repo set-up | `docs/01–05` committed; monorepo with `frontend` (React + Vite + Tailwind with Fresh Counter tokens), `backend` (Express + Prisma) and `shared`; CI runs lint and typecheck; Neon DB connected; first deploy: web on Netlify with the `/api` proxy, API on Render (`/api/health` responds) | — |
+| **Day 1** | Stages 1–5 docs; repo set-up | `docs/01–05` committed; monorepo with `frontend` (React + Vite + Tailwind with Fresh Counter tokens), `backend` (Express + Prisma) and `shared`; CI runs lint and typecheck; Neon DB connected; first deploy (`/api/health` responds) | — |
 | **Day 2** | Auth + RBAC + Admin | Sign-up, login, logout, session, lockout; `authenticate` + `requireRole` middleware; React Router guards; Users page; Settings page; seed script; **unit tests for password, session and guard** | US-01–05 |
 | **Day 3** | Menu + ordering core | Menu items CRUD; daily menu editor; **S3 menu + S4 checkout (Stitch design)**; **place order with atomic stock update and slot capacity**; cancel; **unit tests for the cut-off and stock rules** | US-06–10 |
 | **Day 4** | QR + staff + dashboard | QR generation; **S5 order pass**; My Orders; staff queue; status changes; scan/verify; prep list; **S10 dashboard** | US-11–14 |

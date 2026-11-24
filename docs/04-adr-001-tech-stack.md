@@ -28,9 +28,9 @@ The deciding constraints are **time to build**, **testability** and **my own ski
 One codebase: React UI and API route handlers in the same Next.js app. One deployment.
 
 ### Option B — React (Vite) SPA + Node/Express REST API + Prisma + PostgreSQL (Neon)
-Two apps in one repository (npm workspaces): a React single-page app hosted as static files on **Netlify**, and an Express API hosted on **Render**. A shared package holds the Zod schemas and types.
+Two apps in one repository (npm workspaces): a React single-page app (static files) and an Express API, each hosted separately. A shared package holds the Zod schemas and types.
 
-### Option C — Spring Boot (Java) + React + PostgreSQL on Render
+### Option C — Spring Boot (Java) + React + PostgreSQL
 A Java back end (Spring Security, JPA) with a React front end.
 
 ## 3. Comparison
@@ -40,8 +40,8 @@ Scores: 1 (poor) to 5 (excellent). The weights reflect the challenge: time and t
 | Criterion | Weight | A: Next.js | **B: React + Express** | C: Spring Boot + React |
 |---|---|---|---|---|
 | **Personal skill** | 20% | 3: React is familiar, but App Router and server components are new to me | **5**: the stack I know best | 2: Java is not my daily language |
-| **Time to build** (one week, solo) | 25% | 5: one project, one deploy, no CORS | **4**: two apps, but a shared package removes duplicated types, and the Netlify `/api` proxy removes most CORS and cookie work | 2: most boilerplate; two languages |
-| **Hosting cost** (free tier fit) | 15% | 5: Vercel + Neon; no sleeping server | **3**: Netlify + Neon are fine; the free Render API sleeps when idle, so the first request is slow | 2: same sleep issue, plus JVM memory pressure |
+| **Time to build** (one week, solo) | 25% | 5: one project, one deploy, no CORS | **4**: two apps, but a shared package removes duplicated types, and an `/api` proxy on the web host removes most CORS and cookie work | 2: most boilerplate; two languages |
+| **Hosting cost** (free tier fit) | 15% | 5: Vercel + Neon; no sleeping server | **3**: static hosting + Neon are fine; a free always-on API host sleeps when idle, so the first request is slow | 2: same sleep issue, plus JVM memory pressure |
 | **Testability** | 25% | 4: Vitest + Playwright, but API tests need a running Next server | **5**: Vitest; **Supertest calls the Express app in-process** (fast, no server, easy DB set-up); Playwright for UI | 4: excellent JUnit + MockMvc, but a separate UI test stack |
 | **Scalability** | 15% | 4: serverless scales automatically | **4**: stateless API scales horizontally; frontend is a CDN-hosted static site | 5: mature and very scalable |
 | **Weighted score** | 100% | 4.20 | **4.30** | 2.95 |
@@ -84,8 +84,8 @@ Scores: 1 (poor) to 5 (excellent). The weights reflect the challenge: time and t
 | CSV | Server-side generation with formula-injection escaping | Integration requirement (S01) |
 | Email (Should) | Resend | Simple API; failures never block orders |
 | Scheduler (Should) | **GitHub Actions scheduled workflow** → `POST /api/cron/no-show` | Runs on schedule without an always-on process |
-| Frontend hosting | **Netlify** (static) with an `/api/*` **proxy rewrite** to the Render API | The browser sees one site: cookies stay first-party and CORS is barely needed |
-| API hosting | **Render** free web service | Free Node hosting |
+| Frontend hosting | Static hosting with an `/api/*` **proxy rewrite** to the API | The browser sees one site: cookies stay first-party and CORS is barely needed |
+| API hosting | Free Node web service | Free Node hosting |
 | Database hosting | **Neon** free tier (pooled connection string) | Serverless Postgres, branches for dev and test |
 | Unit tests | **Vitest** | Fast, TS-native, same in both apps |
 | API tests | **Supertest + Vitest** | Calls the Express `app` in-process; no server or network needed |
@@ -109,7 +109,7 @@ Scores: 1 (poor) to 5 (excellent). The weights reflect the challenge: time and t
 
 | Risk | Mitigation |
 |---|---|
-| **Cross-site cookies** (frontend and API on different domains) could be blocked by browsers | Netlify `_redirects`: `/api/*  https://<api>.onrender.com/api/:splat  200`. The browser only talks to the Netlify domain, so the cookie stays first-party with `SameSite=Lax`. Vite's `server.proxy` does the same locally |
+| **Cross-site cookies** (frontend and API on different domains) could be blocked by browsers | A rewrite on the web host: `/api/*` → the API. The browser only talks to one domain, so the cookie stays first-party with `SameSite=Lax`. Vite's `server.proxy` does the same locally |
 | **Slow first requests** (serverless cold starts) | The UI shows a loader (top progress bar and spinner) if a request takes over 1 s |
 | Two apps mean two builds and two sets of settings | One monorepo and one CI pipeline; frontend settings are only `VITE_API_BASE=/api` |
 | Prisma has no native **partial unique index** (needed for BR4) | One raw SQL migration |

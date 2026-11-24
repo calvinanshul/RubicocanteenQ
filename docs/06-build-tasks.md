@@ -1,7 +1,7 @@
 # Stage 6c — Build Task List (Frontend + Backend)
 
 **Purpose:** a step-by-step list of every task needed to build CanteenQ, from an empty repo to a deployed, tested app.
-**Stack (ADR-001 v2, Option B):** `frontend` React + Vite + TypeScript + Tailwind (Netlify) · `backend` Node + Express + TypeScript + Prisma (Render) · `shared` Zod schemas · PostgreSQL on Neon · Vitest, Supertest, Playwright, k6.
+**Stack (ADR-001 v2, Option B):** `frontend` React + Vite + TypeScript + Tailwind · `backend` Node + Express + TypeScript + Prisma · `shared` Zod schemas · PostgreSQL on Neon · Vitest, Supertest, Playwright, k6.
 **Design source:** Stitch export `stitch_canteenq_lunch_pre_order_system` → **"Fresh Counter"** design system (`fresh_counter/DESIGN.md`) + 4 designed screens (S3, S4, S5, S10).
 **Related docs:** requirements (`02`), user stories (`03`), ADR (`04`), architecture / data model / API (`05`), test cases (`07`).
 
@@ -91,10 +91,10 @@ The AI design tool added some details that our requirements and data model don't
 | [ ] | SET-09 | Dev proxy | `vite.config.ts` `server.proxy` (and `preview.proxy`): `/api` → `http://localhost:4000`, so the browser uses one origin locally too | 05 §1 | SET-03 | P1 | 0.25 |
 | [ ] | SET-10 | Lint and format | ESLint + Prettier for all workspaces; `npm run lint`, `npm run typecheck`; optional lint-staged hook | 06 | SET-02 | P2 | 0.5 |
 | [ ] | SET-11 | CI pipeline | `.github/workflows/ci.yml` from `06-build-plan.md §5` (Postgres service, shared build, migrate, seed, lint, unit, Supertest, build, Playwright) | 06 §5 | SET-06, BE-12 | P1 | 1.5 |
-| [ ] | SET-12 | Deploy the API to Render | Web service from `backend` (build: `npm ci && npm run build -w shared -w backend && npx prisma migrate deploy`; start: `node dist/server.js`); set environment variables; `/api/health` responds | 05 §6 | SET-08, BE-67 | P1 | 1 |
-| [ ] | SET-13 | Deploy the web app to Netlify | `frontend/netlify.toml` with the **`/api/*` proxy rewrite** to the Render URL and the SPA fallback; deploy previews on pull requests | 05 §6 | SET-12 | P1 | 0.75 |
-| [ ] | SET-14 | **Verify cookies through the proxy** | On the Netlify URL: sign up, reload, `/api/auth/me` returns the user; the cookie is first-party (`SameSite=Lax`, `Secure`); direct calls from another origin are blocked by CORS | ADR-001 §6 | SET-13, BE-26 | P1 | 0.5 |
-| [ ] | SET-15 | Staging API for load tests | Second Render service on the Neon **dev branch** with `ENABLE_TEST_CLOCK=true`, used by k6 (never production) | 07e | SET-12 | P2 | 0.5 |
+| [ ] | SET-12 | Deploy the API | Web service from `backend` (build: `npm ci && npm run build -w shared -w backend && npx prisma migrate deploy`; start: `node dist/server.js`); set environment variables; `/api/health` responds | 05 §6 | SET-08, BE-67 | P1 | 1 |
+| [ ] | SET-13 | Deploy the web app | Hosting config with the **`/api/*` proxy rewrite** to the API URL and the SPA fallback; deploy previews on pull requests | 05 §6 | SET-12 | P1 | 0.75 |
+| [ ] | SET-14 | **Verify cookies through the proxy** | On the live URL: sign up, reload, `/api/auth/me` returns the user; the cookie is first-party (`SameSite=Lax`, `Secure`); direct calls from another origin are blocked by CORS | ADR-001 §6 | SET-13, BE-26 | P1 | 0.5 |
+| [ ] | SET-15 | Staging API for load tests | Second API deployment on the Neon **dev branch** with `ENABLE_TEST_CLOCK=true`, used by k6 (never production) | 07e | SET-12 | P2 | 0.5 |
 
 ## 2. Backend tasks
 
@@ -132,7 +132,7 @@ The AI design tool added some details that our requirements and data model don't
 | [ ] | BE-27 | `POST /api/auth/login` (A2) | Same 401 message for an unknown email and a wrong password; disabled → 403; locked → 429 | US-02 | BE-25 | P1 | 1 |
 | [ ] | BE-28 | `POST /api/auth/logout` (A3), `GET /api/auth/me` (A4) | Logout clears the cookie; `/me` returns the user (name, role, `employeeCode`, `department`) | US-02 | BE-23 | P1 | 0.5 |
 | [ ] | BE-29 | Role guard rules | `authenticate` loads the user from the DB on **every** request (role and active flag) → 401; `requireRole` → 403; order queries scoped by user so employees get 404 (not 403) for other users' orders | US-03, TC-API-RBAC-* | BE-18 | P1 | 1 |
-| [ ] | BE-30 | Assemble `app.ts` | Order: `helmet` → `cors({ origin: WEB_ORIGIN, credentials: true })` → `express.json({ limit: '100kb' })` → `cookie-parser` → `testClock` → request logger (`pino-http`) → routers under `/api` → `notFound` → `errorHandler`; rate limit on `/api/auth/*`; `trust proxy` set (behind Render and the Netlify proxy) | 05a §2, NFR3 | BE-17..19 | P1 | 1 |
+| [ ] | BE-30 | Assemble `app.ts` | Order: `helmet` → `cors({ origin: WEB_ORIGIN, credentials: true })` → `express.json({ limit: '100kb' })` → `cookie-parser` → `testClock` → request logger (`pino-http`) → routers under `/api` → `notFound` → `errorHandler`; rate limit on `/api/auth/*`; `trust proxy` set (behind the hosting proxy) | 05a §2, NFR3 | BE-17..19 | P1 | 1 |
 
 ### 2.4 Users and settings (Admin)
 
@@ -188,13 +188,13 @@ The AI design tool added some details that our requirements and data model don't
 | [ ] | BE-64 | Email adapter (Resend) | `sendOrderConfirmed`, `sendOrderReady`; errors are logged and never thrown; no-op when there's no API key | US-18 | — | P2 | 1 |
 | [ ] | BE-65 | Hook emails | Confirmation after BE-43; "ready" after the READY change in BE-50 | US-18 | BE-64 | P2 | 0.5 |
 | [ ] | BE-66 | Auto no-show job | `POST /api/cron/no-show` with the Bearer `CRON_SECRET` (constant-time compare); marks PLACED, PREPARING and READY orders as NO_SHOW after slot end + grace; **GitHub Actions schedule** `.github/workflows/no-show-cron.yml` (see `06-build-plan.md §6`) | US-20 | BE-48 | P2 | 1 |
-| [ ] | BE-67 | Health endpoint (X1) | DB ping; 503 when the DB is down; used by Render's health check and as the warm-up URL | NFR7 | BE-14 | P1 | 0.25 |
+| [ ] | BE-67 | Health endpoint (X1) | DB ping; 503 when the DB is down; used by the host's health check and as the warm-up URL | NFR7 | BE-14 | P1 | 0.25 |
 
 ### 2.9 Backend hardening
 
 | ✓ | ID | Task | Details / done when | Ref | Depends | Pri | Est |
 |---|---|---|---|---|---|---|---|
-| [ ] | BE-70 | Security headers | API: `helmet` defaults. Web: `frontend/public/_headers` for Netlify with CSP (self + Google Fonts for Material Symbols), `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy: camera=(self)` | NFR3 | SET-13 | P2 | 0.75 |
+| [ ] | BE-70 | Security headers | API: `helmet` defaults. Web: hosting headers file with CSP (self + Google Fonts for Material Symbols), `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy: camera=(self)` | NFR3 | SET-13 | P2 | 0.75 |
 | [ ] | BE-71 | Logging | `pino` + `pino-http` (JSON lines): request ID, route, user ID, status, error code; redact `password`, `cookie` and `authorization` | NFR3 | BE-30 | P2 | 0.5 |
 | [ ] | BE-72 | Production test-clock guard | Fail start-up if `ENABLE_TEST_CLOCK=true` and `APP_ENV=production` | TC-API-SYS-02 | BE-19 | P1 | 0.25 |
 | [ ] | BE-73 | Query indexes | Confirm the `(orderDate, slotStart, status)` index; `EXPLAIN` the queue and dashboard queries | NFR1 | BE-60 | P2 | 0.5 |
@@ -326,7 +326,7 @@ The AI design tool added some details that our requirements and data model don't
 | [ ] | QA-08 | Playwright config: projects `chromium-desktop` + `mobile` (Pixel 5 / iPhone 13); **two `webServer` entries** (API on :4000, `vite preview` on :4173 with the `/api` proxy); HTML report | — | SET-04 | P1 | 0.5 |
 | [ ] | QA-09 | UI tests: golden path, sold out/stepper, after cut-off, cancel, scan errors, XSS, mobile layout, dashboard, CSV, cancelled-in-queue | TC-UI-01..15 | QA-08, FE-* | P1 | 5 |
 | [ ] | QA-10 | **Visual check against Stitch**: screenshot S3, S4, S5, S10 at the design sizes and compare side by side with the `screen.png` files; log differences | TC-UI-16 | FE-41, FE-50, FE-55, FE-80 | P2 | 1 |
-| [ ] | QA-11 | k6 load test (through the Netlify proxy, after warm-up) + oversell SQL checks; fill in the results table | TC-NFR-01/02 | SET-15, BE-43 | P1 | 2 |
+| [ ] | QA-11 | k6 load test (against the staging deployment, after warm-up) + oversell SQL checks; fill in the results table | TC-NFR-01/02 | SET-15, BE-43 | P1 | 2 |
 | [ ] | QA-12 | Manual: real-phone camera scan, tablet layout, emails, 2 exploratory charters | TC-M-01..05 | all | P1 | 2 |
 | [ ] | QA-13 | Optional: Lighthouse accessibility + OWASP ZAP baseline | TC-NFR-03/04 | SET-13 | P3 | 1 |
 | [ ] | QA-14 | Re-run `scripts/trace-matrix.py`; update the traceability matrix status; fill in the bug log | 07c, 07d | all QA | P1 | 1 |

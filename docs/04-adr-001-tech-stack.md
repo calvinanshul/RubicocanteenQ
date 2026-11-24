@@ -82,7 +82,7 @@ Scores: 1 (poor) to 5 (excellent). The weights reflect the challenge: time and t
 | Logging | `pino` | Structured logs; no secrets |
 | QR | `qrcode` (server-side PNG) + `html5-qrcode` (camera scanner in the browser) | Integration requirement |
 | CSV | Server-side generation with formula-injection escaping | Integration requirement (S01) |
-| Email (Should) | Resend | Simple API; failures never block orders |
+| Email (Should) | Planned: Resend. **Built:** SMTP through `nodemailer`, with **Brevo** on the live site (Ethereal or off for development and tests) | Any SMTP provider works without code changes; failures never block the request |
 | Scheduler (Should) | **GitHub Actions scheduled workflow** → `POST /api/cron/no-show` | Runs on schedule without an always-on process |
 | Frontend hosting | Static hosting with an `/api/*` **proxy rewrite** to the API | The browser sees one site: cookies stay first-party and CORS is barely needed |
 | API hosting | Free Node web service | Free Node hosting |

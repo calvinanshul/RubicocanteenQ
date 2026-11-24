@@ -40,6 +40,7 @@ Default data used in the examples: cut-off **11:00 IST**, slots **12:30–14:30*
 | AC4 **(neg)** | Password `abc` | I submit the form | I see "Password must be 8–64 characters with at least one letter and one number" |
 | AC5 **(edge)** | Email `  Priya@Rubicotech.COM ` | I submit the form | The email is trimmed and lower-cased before saving; a duplicate check against `priya@rubicotech.com` succeeds |
 | AC6 (security) | An account was created | I inspect the database | The password is stored as a bcrypt hash (`$2b$12$…`), never in plain text |
+| AC7 | My account was just created (AC1) | — | I receive a "Welcome to CanteenQ" email with a login link. If email is down, sign-up still succeeds and the failure is only logged |
 
 ### US-02 · Log in and log out `M01` `BR11` `BR12`
 **As a** registered user **I want** to log in and out securely **so that** only I can use my account.
@@ -75,6 +76,7 @@ Default data used in the examples: cut-off **11:00 IST**, slots **12:30–14:30*
 | AC3 | A user is active | I deactivate them | Their status is "Disabled", and they can no longer log in (US-02 AC4) |
 | AC4 **(neg)** | I am the **only** ADMIN | I try to change my own role or deactivate myself | I see "At least one active admin is required" (`409 LAST_ADMIN`) |
 | AC5 **(neg)** | The user ID does not exist | I PATCH `/api/users/9999` | `404 NOT_FOUND` |
+| AC6 | I change Ramesh's role (AC2) | The change is saved | Ramesh receives "Your CanteenQ role is now Manager", naming the old and new role with a link to his new home page. No email when the role stays the same; an email failure never undoes the change |
 
 ### US-05 · Admin configures canteen settings `M04`
 **As an** admin **I want** to set the cut-off, pickup window and limits **so that** the system follows company rules.
@@ -250,6 +252,8 @@ Default data used in the examples: cut-off **11:00 IST**, slots **12:30–14:30*
 | AC3 (security) | An employee name starts with `=`, `+`, `-` or `@` | It is exported | The cell is prefixed with `'` to prevent CSV/formula injection |
 
 ### US-18 · Email notifications `S02`
+> **Built so far:** the welcome email (US-01 AC7) and the role-change email (US-04 AC6), sent through Brevo SMTP on the live site. The order emails below (AC1, AC2) are not built yet.
+
 | AC | Given | When | Then |
 |---|---|---|---|
 | AC1 | I place an order | It is confirmed | I receive an email with the items, slot and pickup code |

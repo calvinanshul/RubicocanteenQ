@@ -25,7 +25,7 @@ Links **Must/Should features → user stories → acceptance criteria → test c
 | M16 Responsive | Must | US-16 | ✅ UI + M |
 | M17 Slot capacity *(was S03)* | Must | US-19 | ✅ A |
 | S01 CSV export | Should | US-17 | ✅ U + A + UI |
-| S02 Email | Should | US-18 | ✅ A + M |
+| S02 Email | Should | US-01 AC7, US-04 AC6, US-18 | ✅ U + A + M (welcome and role-change emails; order emails not built) |
 | S04 Auto no-show | Should | US-20 | ✅ A |
 
 ## 2. Story → acceptance criterion → test case
@@ -40,6 +40,7 @@ Levels: U = unit · A = API · UI = Playwright UI · M = manual · N = non-funct
 |  |  |  | AC4 | TC-API-AUTH-08, TC-U-12, TC-UI-01 | U/A/UI | ☐ Not run |
 |  |  |  | AC5 | TC-API-AUTH-03, TC-U-12 | U/A | ☐ Not run |
 |  |  |  | AC6 | TC-U-08 | U | ☐ Not run |
+|  |  |  | AC7 | TC-API-AUTH-10, TC-M-06 | A/M | ✅ Pass |
 | US-02 | Log in and log out | M01 | AC1 | TC-UI-02 | UI | ☐ Not run |
 |  |  |  | AC2 | TC-API-AUTH-04 | A | ☐ Not run |
 |  |  |  | AC3 | TC-API-AUTH-05, TC-U-14 | U/A | ☐ Not run |
@@ -57,6 +58,7 @@ Levels: U = unit · A = API · UI = Playwright UI · M = manual · N = non-funct
 |  |  |  | AC3 | TC-API-USR-03 | A | ☐ Not run |
 |  |  |  | AC4 | TC-API-USR-04 | A | ☐ Not run |
 |  |  |  | AC5 | TC-API-USR-05 | A | ☐ Not run |
+|  |  |  | AC6 | TC-API-USR-06, TC-M-06 | A/M | ✅ Pass |
 | US-05 | Admin configures canteen settings | M04 | AC1 | TC-API-SET-01, TC-API-SET-04 | A | ☐ Not run |
 |  |  |  | AC2 | TC-API-SET-02, TC-U-15 | U/A | ☐ Not run |
 |  |  |  | AC3 | TC-API-SET-02, TC-U-15 | U/A | ☐ Not run |

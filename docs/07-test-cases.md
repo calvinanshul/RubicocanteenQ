@@ -42,6 +42,7 @@ Common preconditions: seed data loaded; cut-off 11:00; slots 12:30–14:30 every
 | TC-API-AUTH-07 | Logout invalidates the session | US-02 AC5 | P1 | Log in → logout → GET `/me` | 204, then 401 |
 | TC-API-AUTH-08 | Weak password | US-01 AC4 | P1 | Sign up with `abc` | 400 `fields.password` |
 | TC-API-AUTH-09 | Expired session | US-02 AC6 | P2 | Call `/me` with a token whose `exp` is in the past | 401 `SESSION_EXPIRED` |
+| TC-API-AUTH-10 | Welcome email on sign-up | US-01 AC7 | P2 | Sign up with a valid body (fake mailer); repeat with the mailer forced to fail | One "Welcome to CanteenQ" email to the new address; with the failing mailer still 201 and the user exists |
 
 ### 2.2 Access control
 | ID | Title | Story | Pri | Steps | Expected |
@@ -61,6 +62,7 @@ Common preconditions: seed data loaded; cut-off 11:00; slots 12:30–14:30 every
 | TC-API-USR-03 | Deactivate | US-04 AC3 | P1 | PATCH `isActive:false` | 200; that user's login → 403 |
 | TC-API-USR-04 | Last admin protected | US-04 AC4 | P1 | The only admin demotes or deactivates themselves | 409 `LAST_ADMIN` |
 | TC-API-USR-05 | Unknown user | US-04 AC5 | P3 | PATCH `/api/users/999999` | 404 |
+| TC-API-USR-06 | Role-change email | US-04 AC6 | P2 | PATCH role EMPLOYEE → STAFF (fake mailer); PATCH the same role; mailer forced to fail | One email "Your CanteenQ role is now Staff" naming both roles; none for the same role; a mail failure still returns 200 with the role saved |
 | TC-API-SET-01 | Save settings | US-05 AC1 | P1 | PUT valid settings; GET slots | 200; slots reflect the new window |
 | TC-API-SET-02 | Invalid settings | US-05 AC2–4 | P1 | Three invalid bodies | 400 with field errors each time |
 | TC-API-SET-03 | Cut-off change doesn't touch existing orders | US-05 AC5 | P2 | Place an order at 10:00; change the cut-off to 09:00 | The existing order is unchanged; a new order at 10:05 → 409 `CUTOFF_PASSED` |
@@ -159,6 +161,7 @@ Common preconditions: seed data loaded; cut-off 11:00; slots 12:30–14:30 every
 | TC-M-03 | Emails received | US-18 AC1/AC2 | P2 | Place an order; mark it READY | Both emails arrive with the correct code |
 | TC-M-04 | Exploratory: cut-off rush | R2 | P2 | 30-min charter: order, cancel and re-order near 10:59 with network throttling (Slow 3G) | Notes and bugs logged |
 | TC-M-05 | Exploratory: counter chaos | R4 | P2 | 30-min charter: rapid scans, duplicate scans, wrong-day codes, airplane mode | Notes and bugs logged |
+| TC-M-06 | Emails arrive on the live site (Brevo SMTP) | US-01 AC7, US-04 AC6 | P1 | On the live site sign up with a company address you can read; as admin change that user's role | Both emails arrive; Brevo → Transactional → Logs shows them delivered |
 
 ## 5. Non-functional tests
 

@@ -24,14 +24,14 @@ flowchart TB
 
     GHA[GitHub Actions schedule<br/>calls /api/cron/no-show]
     DB[(PostgreSQL<br/>Supabase<br/>pooled connection)]
-    MAIL[Resend<br/>email API]
+    MAIL[Brevo<br/>SMTP relay]
 
     E & S & M & A -->|HTTPS · one domain| UI
     UI -->|fetch /api/*, same origin| API
     GHA -->|Bearer CRON_SECRET| API
     API --> SVC
     SVC -->|Prisma ORM| DB
-    SVC -.->|async, best-effort| MAIL
+    SVC -.->|SMTP, after the response, best-effort| MAIL
 ```
 
 **One origin:** pages and `/api/*` are served by the same Next.js app on Vercel, so the session cookie is a normal first-party cookie (`SameSite=Lax`) and no cross-site cookie, proxy or CORS setup is needed. Locally, `npm run dev` serves both on `http://localhost:3000`.
@@ -167,7 +167,9 @@ flowchart LR
 
 Migrations and the production seed run against the production database with `npm run db:deploy && npm run db:seed:prod`.
 
-**Settings and secrets:** set in Vercel's environment variables: `DATABASE_URL`, `DIRECT_URL`, `SESSION_SECRET`, `CRON_SECRET`, `WEB_ORIGIN`, `APP_ENV`, `ALLOWED_EMAIL_DOMAINS`, `ADMIN_*`, `MAIL_*`. Nothing secret reaches the browser. GitHub holds `CRON_SECRET` and `API_URL` for the scheduled job. `.env` is git-ignored; `.env.example` is committed.
+**Settings and secrets:** set in Vercel's environment variables: `DATABASE_URL`, `DIRECT_URL`, `SESSION_SECRET`, `CRON_SECRET`, `WEB_ORIGIN`, `APP_ENV`, `ALLOWED_EMAIL_DOMAINS`, `ADMIN_*`, `MAIL_TRANSPORT=smtp`, `MAIL_FROM` and `SMTP_*` (Brevo). Nothing secret reaches the browser. GitHub holds `CRON_SECRET` and `API_URL` for the scheduled job. `.env` is git-ignored; `.env.example` is committed.
+
+**Email:** two emails are sent: a welcome email on sign-up and an email when an admin changes a user's role (`src/server/services/emailService.ts`). They go through SMTP (`src/server/adapters/mailer.ts`, nodemailer): Brevo (`smtp-relay.brevo.com:587`) on the live site and locally, Ethereal or `none` as alternatives. The `From` address must be a sender verified in Brevo. Each email runs in Next.js `after()`, so Vercel keeps the function alive until it is sent, and a mail failure is only logged: it never delays or fails the sign-up or the role change.
 
 **Slow requests:** serverless cold starts can make the first request after a quiet period slower. When any request takes more than 1 second, the UI shows a loader (a thin progress bar across the top and a small spinner).
 

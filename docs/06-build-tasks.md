@@ -185,7 +185,7 @@ The AI design tool added some details that our requirements and data model don't
 | [ ] | BE-61 | Live orders feed | Reuse Q1 with `?limit=5&sort=recent` for the dashboard table; the response includes `lastUpdated` | D16 | BE-49 | P2 | 0.5 |
 | [ ] | BE-62 | CSV adapter | `toCSV(rows)` with quoting + **formula-injection escaping** | US-17 AC3, TC-U-13 | — | P2 | 0.5 |
 | [ ] | BE-63 | `GET /api/reports/orders.csv` (R3) + `statement.csv` (R4) | Range ≤ 92 days; `Content-Disposition` filename; statement includes `employeeCode` | US-17 | BE-62 | P2 | 1 |
-| [ ] | BE-64 | Email adapter (Resend) | `sendOrderConfirmed`, `sendOrderReady`; errors are logged and never thrown; no-op when there's no API key | US-18 | — | P2 | 1 |
+| [ ] | BE-64 | Email adapter (planned: Resend; built: SMTP via nodemailer, Brevo live) | `sendOrderConfirmed`, `sendOrderReady`; errors are logged and never thrown; no-op when there's no API key | US-18 | — | P2 | 1 |
 | [ ] | BE-65 | Hook emails | Confirmation after BE-43; "ready" after the READY change in BE-50 | US-18 | BE-64 | P2 | 0.5 |
 | [ ] | BE-66 | Auto no-show job | `POST /api/cron/no-show` with the Bearer `CRON_SECRET` (constant-time compare); marks PLACED, PREPARING and READY orders as NO_SHOW after slot end + grace; **GitHub Actions schedule** `.github/workflows/no-show-cron.yml` (see `06-build-plan.md §6`) | US-20 | BE-48 | P2 | 1 |
 | [ ] | BE-67 | Health endpoint (X1) | DB ping; 503 when the DB is down; used by the host's health check and as the warm-up URL | NFR7 | BE-14 | P1 | 0.25 |

@@ -44,7 +44,7 @@
 | ID | Feature | Description |
 |---|---|---|
 | **S01** | CSV export | Orders for a date range, and a per-employee monthly statement (for billing) |
-| **S02** | Email notifications | Order confirmation and "order is READY" emails (Resend free tier) |
+| **S02** | Email notifications | Welcome email on sign-up and an email when an admin changes a user's role (**built**, Brevo SMTP). Order confirmation and "order is READY" emails (not built yet) |
 | ~~S03~~ | ~~Slot capacity~~ | **Moved to Must as M17** (v2) |
 | **S04** | Auto NO_SHOW | A scheduled job marks uncollected orders as NO_SHOW at slot end + grace period |
 | **S05** | Closed dates | Admin adds holidays; ordering is blocked on those dates |
@@ -122,6 +122,7 @@
 | 18 Nov 2026 | Data additions: `pickupLocation` setting, optional `employeeCode` and `department` on users, categories `COMBO` and `LIGHT`, extra dashboard KPIs | Needed by the design (D1, D2, D5, D14, D17) |
 | 19 Nov 2026 | Company email can be **@company.com or @company.in**: default `allowedDomains` = `company.com,company.in` (migration `20261119070000_allow_company_in` updates installs still on the old default) | Change request: the company uses both domains (assumption A4) |
 | 19 Nov 2026 | Sign-up domains are the company's real domains **@rubicotech.com and @rubicotech.in** (default `allowedDomains`; migration `20261119080000_rubicotech_domains`); demo accounts and tests use `@rubicotech.com`; `ALLOWED_EMAIL_DOMAINS` in the project `.env` can override | Change request ("company" was a placeholder) |
+| 24 Nov 2026 | **Emails:** welcome email on sign-up (US-01 AC7) and role-change email (US-04 AC6), delivered through **Brevo SMTP** on the live site (Resend was the original plan) | Change request: users must be told when they join and when their access changes |
 
 ### 6.1 Design decisions (Stitch design vs requirements)
 

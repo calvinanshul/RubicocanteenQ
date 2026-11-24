@@ -2,7 +2,7 @@
 
 Company-email sign-up, password rules, hashing, welcome email (US-01, S2, A1, ST-16).
 
-Sprints: S01, S04 · Cases: 25 (7 test cases, 18 edge cases) · Back to [all test cases](../TEST-CASES.md) · Selector and module contracts: [contracts.md](../contracts.md)
+Sprints: S01, S04 · Cases: 26 (8 test cases, 18 edge cases) · Back to [all test cases](../TEST-CASES.md) · Selector and module contracts: [contracts.md](../contracts.md)
 
 | ID | Title | Sprint | Level | Pri | Story / AC | Steps / input | Expected | Script › test | Status |
 |---|---|---|---|---|---|---|---|---|---|
@@ -22,8 +22,9 @@ Sprints: S01, S04 · Cases: 25 (7 test cases, 18 edge cases) · Back to [all tes
 | EC-01-25 | Duplicate email shown on the field (UI) | S01 | UI | P2 | — | Input as in the title | Behaves as the title describes (no 500; standard error shape) | `e2e/auth.spec.ts`, `web/routes/SignupPage.test.tsx` | ✅ |
 | EC-01-28 | `@rubicotech.in` address can sign up (second company domain) | S01 | API + UI | P1 | US-01 AC1 · A4 | Sign up as x@rubicotech.in | 201 / lands on the menu; signup-config lists both domains | `api/auth.test.ts`, `e2e/auth.spec.ts`, `shared/schemas.test.ts` | ✅ |
 | EC-01-29 | Domain error names both domains; look-alikes refused | S01 | API | P1 | US-01 AC2 | x@company.co, x@mail.rubicotech.in, x@rubicotech.in.evil.io, x@company.net | 403 "Use your company email (@rubicotech.com or @rubicotech.in)" | `api/auth.test.ts`, `api/edge.test.ts` | ✅ |
-| EC-04-18 | Welcome email sent on sign-up | S04 | API | P2 | ST-16 (welcome email, Ethereal) | POST signup with a valid body (fake mailer) | 201; exactly one email to the new address, subject "Welcome to CanteenQ", greeting with the name | `api/email.test.ts` | ✅ |
-| EC-04-19 | Mail failure never fails the sign-up | S04 | API | P1 | ST-16 · "never blocks" | Mailer rejects (SMTP down) | 201 with the session cookie; the user exists; failure only logged | `api/email.test.ts` | ✅ |
+| TC-API-AUTH-10 | Welcome email on sign-up | S04 | API | P2 | US-01 AC7 | Sign up with a valid body (fake mailer); repeat with the mailer forced to fail | One "Welcome to CanteenQ" email to the new address; with the failing mailer still 201 and the user exists | `api/email.test.ts` | ✅ |
+| EC-04-18 | Welcome email sent on sign-up | S04 | API | P2 | US-01 AC7 · ST-16 (welcome email) | POST signup with a valid body (fake mailer) | 201; exactly one email to the new address, subject "Welcome to CanteenQ", greeting with the name | `api/email.test.ts` | ✅ |
+| EC-04-19 | Mail failure never fails the sign-up | S04 | API | P1 | US-01 AC7 · "never blocks" | Mailer rejects (SMTP down) | 201 with the session cookie; the user exists; failure only logged | `api/email.test.ts` | ✅ |
 | EC-04-20 | Refused sign-ups send no email | S04 | API | P2 | ST-16 | Duplicate email (409), gmail (403), bad body (400) | No email for any of them | `api/email.test.ts` | ✅ |
 | EC-04-U4 | Email is off unless configured | S04 | Unit | P2 | ST-16 | No `MAIL_TRANSPORT` | `none` | `unit/mailer.test.ts` | ✅ |
 | EC-04-U5 | SMTP needs a host | S04 | Unit | P3 | ST-16 | `MAIL_TRANSPORT=smtp` without `SMTP_HOST` | Start-up refused naming `SMTP_HOST`; port defaults to 587 | `unit/mailer.test.ts` | ✅ |

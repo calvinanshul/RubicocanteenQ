@@ -38,5 +38,6 @@
 | "What would you do with one more week?" | Should and Could list + retro |
 | "Why did you change your tech decision?" | ADR-001 §3 *What changed between v1 and v2* |
 | "How do cookies work with two hosts?" | `05-architecture.md §1`: there is only one host; pages and `/api` are the same Next.js app on Vercel |
+| "Does it integrate with anything real?" | QR codes, CSV export and email: a welcome email on sign-up and an email when an admin changes a role, delivered through Brevo SMTP (`05-architecture.md` §6, US-01 AC7, US-04 AC6). Show one arriving: change a demo user's role and open the inbox |
 | "What if the server is slow during the demo?" | The UI shows a loader (top progress bar and spinner) while a request is slow |
 | "Did you follow the AI design blindly?" | `02-requirements.md §6.1` (21 decisions) and prompt journal M-01..M-03 |

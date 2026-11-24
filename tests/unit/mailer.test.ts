@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { createMailer } from '@/server/adapters/mailer';
 import { parseEnv } from '@/server/env';
-import { escapeHtml, welcomeEmail } from '@/server/services/emailService';
+import { escapeHtml, roleChangedEmail, welcomeEmail } from '@/server/services/emailService';
 
 const base = { DATABASE_URL: 'postgresql://x', SESSION_SECRET: 'x'.repeat(32) };
 
@@ -40,5 +40,21 @@ describe('welcome email', () => {
     expect(m.html).not.toContain('<img');
     expect(m.html).toContain('&lt;img src=x onerror=alert(1)&gt;');
     expect(escapeHtml(`a&"'`)).toBe('a&amp;&quot;&#39;');
+  });
+});
+
+describe('role-change email', () => {
+  it('EC-04-U10 names both roles and links to the new role\'s home page', () => {
+    const m = roleChangedEmail({ name: 'Priya Sharma', email: 'priya@rubicotech.com' }, 'EMPLOYEE', 'MANAGER', 'https://rubicocanteen-q.vercel.app/');
+    expect(m.to).toBe('priya@rubicotech.com');
+    expect(m.subject).toBe('Your CanteenQ role is now Manager');
+    expect(m.text).toContain('from Employee to Manager');
+    expect(m.text).toContain('https://rubicocanteen-q.vercel.app/manager/dashboard');
+    expect(m.html).toContain('href="https://rubicocanteen-q.vercel.app/manager/dashboard"');
+  });
+  it('EC-04-U11 a name with HTML is escaped in the HTML body', () => {
+    const m = roleChangedEmail({ name: '<b>x</b>', email: 'x@rubicotech.com' }, 'STAFF', 'EMPLOYEE', 'http://localhost');
+    expect(m.html).not.toContain('<b>x</b>');
+    expect(m.html).toContain('&lt;b&gt;x&lt;/b&gt;');
   });
 });

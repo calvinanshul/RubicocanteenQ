@@ -52,7 +52,13 @@ export async function listUsers(query: UsersQuery): Promise<UsersPage> {
  * At least one active admin must remain (AC4, 409 LAST_ADMIN). Changes take effect on the user's
  * next request, because `authenticate` reloads the user every time (BR12).
  */
-export async function updateUser(id: number, patch: UserPatchInput, actorId: number): Promise<AdminUserDto> {
+export interface UserUpdateResult {
+  user: AdminUserDto;
+  /** Set only when this update changed the role: the role before it. */
+  previousRole?: Role;
+}
+
+export async function updateUser(id: number, patch: UserPatchInput, actorId: number): Promise<UserUpdateResult> {
   return prisma.$transaction(async (tx) => {
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(${ADMIN_LOCK_KEY})`;
     const before = await tx.user.findUnique({ where: { id } });
@@ -69,13 +75,14 @@ export async function updateUser(id: number, patch: UserPatchInput, actorId: num
     if (patch.isActive !== undefined) data.isActive = patch.isActive;
     if (patch.employeeCode !== undefined) data.employeeCode = patch.employeeCode ? patch.employeeCode.toUpperCase() : null;
     if (patch.department !== undefined) data.department = patch.department || null;
-    if (Object.keys(data).length === 0) return toAdminUserDto(before);
+    if (Object.keys(data).length === 0) return { user: toAdminUserDto(before) };
 
     const after = await tx.user.update({ where: { id }, data });
+    const roleChanged = after.role !== before.role;
     const pick = (u: User) => ({ role: u.role, isActive: u.isActive, employeeCode: u.employeeCode, department: u.department });
     await tx.auditLog.create({
-      data: { actorId, action: patch.role !== undefined && patch.role !== before.role ? 'ROLE_CHANGED' : 'USER_UPDATED', entity: 'User', entityId: id, before: pick(before), after: pick(after) },
+      data: { actorId, action: roleChanged ? 'ROLE_CHANGED' : 'USER_UPDATED', entity: 'User', entityId: id, before: pick(before), after: pick(after) },
     });
-    return toAdminUserDto(after);
+    return { user: toAdminUserDto(after), ...(roleChanged ? { previousRole: before.role } : {}) };
   });
 }

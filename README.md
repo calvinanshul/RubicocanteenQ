@@ -76,5 +76,12 @@ migrations and the production seed against the production database with
 `npm run db:deploy && npm run db:seed:prod`. Never set `ENABLE_TEST_CLOCK=true` in production: the server
 refuses the configuration.
 
+**Email:** a welcome email goes out on every sign-up, and an email goes to a user when an admin changes their
+role. The live site sends them through [Brevo](https://www.brevo.com) SMTP: in Vercel's environment variables set
+`MAIL_TRANSPORT=smtp`, `SMTP_HOST=smtp-relay.brevo.com`, `SMTP_PORT=587`, `SMTP_USER` (the Brevo SMTP login),
+`SMTP_PASS` (a Brevo SMTP key) and `MAIL_FROM` (a sender address verified in Brevo); see `.env.example`. With `MAIL_TRANSPORT=ethereal`
+the emails are only captured in a test inbox; with `none` nothing is sent. An email failure never blocks the
+sign-up or the role change.
+
 Rate limits are kept in memory per serverless instance, so on Vercel they are per instance, not global;
 a shared store (e.g. Redis) would make them exact.

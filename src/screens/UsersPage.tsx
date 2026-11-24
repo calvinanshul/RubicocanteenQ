@@ -1,13 +1,12 @@
 'use client';
 
-import { ROLES, USER_SEARCH_MAX, userPatchSchema, zodFieldErrors, type AdminUserDto, type Role, type UserPatchInput } from '@/shared';
+import { ROLE_NAMES, ROLES, USER_SEARCH_MAX, userPatchSchema, zodFieldErrors, type AdminUserDto, type Role, type UserPatchInput } from '@/shared';
 import { useEffect, useState, type FormEvent } from 'react';
 import { ApiError } from '../api/client';
 import { useMe, useUpdateUser, useUsers } from '../api/hooks';
 import { Alert, Avatar, Button, Dialog, EmptyState, ErrorState, FilterChips, Icon, Skeleton, Switch, TextField, useToast } from '../components/ui';
 import { formatDate } from '../lib/format';
 
-export const ROLE_NAMES: Record<Role, string> = { EMPLOYEE: 'Employee', STAFF: 'Staff', MANAGER: 'Manager', ADMIN: 'Admin' };
 const CHIP_NAMES: Record<Role, string> = { EMPLOYEE: 'Employees', STAFF: 'Staff', MANAGER: 'Managers', ADMIN: 'Admins' };
 
 type Pending =

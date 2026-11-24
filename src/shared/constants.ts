@@ -25,6 +25,9 @@ export type Diet = (typeof DIETS)[number];
 
 export const SLOT_MINUTES_OPTIONS = [10, 15, 20, 30] as const;
 
+/** How each role is named in the UI and in emails. */
+export const ROLE_NAMES: Record<Role, string> = { EMPLOYEE: 'Employee', STAFF: 'Staff', MANAGER: 'Manager', ADMIN: 'Admin' };
+
 /** Where each role lands after login (US-02 AC1). */
 export const ROLE_HOME: Record<Role, string> = {
   EMPLOYEE: '/menu',

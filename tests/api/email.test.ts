@@ -1,8 +1,8 @@
-/** Welcome email on sign-up (out-of-sprint change, see docs/test-cases/features/01-sign-up.md EC-04-18…20, EC-04-U4…U9). */
+/** Welcome email on sign-up and role-change email (see docs/test-cases/features/01-sign-up.md EC-04-18…20, 14-users-admin.md EC-04-21…23). */
 import request from 'supertest';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { setMailer, type MailMessage } from '@/server/adapters/mailer';
-import { app, prisma, uniqueEmail } from './helpers';
+import { agentFor, app, createUser, prisma, uniqueEmail } from './helpers';
 
 function fakeMailer(fail = false) {
   const sent: MailMessage[] = [];
@@ -49,5 +49,42 @@ describe('welcome email on sign-up', () => {
     // Give any stray fire-and-forget send a chance to run before counting
     await new Promise((r) => setTimeout(r, 50));
     expect(mailer.send).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('role-change email', () => {
+  it('EC-04-21 an admin changing a role emails the user once, naming the old and new role', async () => {
+    const { agent } = await agentFor('ADMIN');
+    const target = await createUser({ name: 'Role Mover' });
+    const { sent } = fakeMailer();
+    const res = await agent.patch(`/api/users/${target.id}`).send({ role: 'STAFF' });
+    expect(res.status).toBe(200);
+    expect(res.body.role).toBe('STAFF');
+    await vi.waitFor(() => expect(sent).toHaveLength(1));
+    expect(sent[0]).toMatchObject({ to: target.email, subject: 'Your CanteenQ role is now Staff' });
+    expect(sent[0]?.text).toContain('from Employee to Staff');
+    expect(sent[0]?.text).toContain('/staff/queue');
+  });
+
+  it('EC-04-22 no email when the role does not change (same role, other fields, refused change)', async () => {
+    const { agent } = await agentFor('ADMIN');
+    const target = await createUser();
+    const { mailer } = fakeMailer();
+    await agent.patch(`/api/users/${target.id}`).send({ role: 'EMPLOYEE' }).expect(200);
+    await agent.patch(`/api/users/${target.id}`).send({ department: 'Finance', isActive: false }).expect(200);
+    await agent.patch('/api/users/99999999').send({ role: 'STAFF' }).expect(404);
+    const { agent: employee } = await agentFor('EMPLOYEE');
+    await employee.patch(`/api/users/${target.id}`).send({ role: 'MANAGER' }).expect(403);
+    await new Promise((r) => setTimeout(r, 50));
+    expect(mailer.send).not.toHaveBeenCalled();
+  });
+
+  it('EC-04-23 a mail failure never fails or undoes the role change', async () => {
+    const { agent } = await agentFor('ADMIN');
+    const target = await createUser();
+    const { mailer } = fakeMailer(true);
+    await agent.patch(`/api/users/${target.id}`).send({ role: 'MANAGER' }).expect(200);
+    await vi.waitFor(() => expect(mailer.send).toHaveBeenCalledTimes(1));
+    expect((await prisma.user.findUniqueOrThrow({ where: { id: target.id } })).role).toBe('MANAGER');
   });
 });
